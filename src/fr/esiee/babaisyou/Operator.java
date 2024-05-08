@@ -9,5 +9,25 @@ public record Operator(String operator) implements Word {
       throw new IllegalArgumentException("Operator is not 'Is'");
     }
   }
+
+  @Override
+  public boolean isName() {
+    return false;
+  }
+
+  @Override
+  public boolean isOperator() {
+    return true;
+  }
+
+  @Override
+  public boolean isProperty() {
+    return false;
+  }
+
+  @Override
+  public String word() {
+    return operator;
+  }
 }
 
