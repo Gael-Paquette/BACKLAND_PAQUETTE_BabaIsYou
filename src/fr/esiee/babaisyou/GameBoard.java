@@ -15,14 +15,6 @@ public class GameBoard {
         initializeBoard();
     }
 
-    public int rows() {
-        return this.rows;
-    }
-
-    public int cols() {
-        return this.cols;
-    }
-
     private void initializeBoard() {
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
@@ -31,10 +23,35 @@ public class GameBoard {
         }
     }
 
-    public void swapCells(Square s1, Square s2) {
-        Square tmp = board[s1.x()][s1.y()];
-        board[s1.x()][s1.y()] = board[s2.x()][s2.y()];
-        board[s2.x()][s2.y()] = tmp;
+    public int rows() {
+        return this.rows;
+    }
+
+    public int cols() {
+        return this.cols;
+    }
+
+    public Square getSquare(int x, int y) {
+        return this.board[x][y];
+    }
+
+    public void setSquare(int x, int y, Square square) {
+        this.board[x][y] = square;
+    }
+
+    public void displayBoard() {
+        for(int i = 0 ; i < this.rows ; i++) {
+            for(int j = 0 ; j < this.cols ; j++) {
+                System.out.print("(" + board[i][j].x() + ", " + board[i][j].y() + ") ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void swap(int x1, int y1, int x2, int y2) {
+        Square tmp = getSquare(x1,y1);
+        setSquare(x1, y1, getSquare(x2,y2));
+        setSquare(x2, y2, tmp);
     }
 
 }
