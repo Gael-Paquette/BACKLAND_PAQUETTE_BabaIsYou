@@ -1,7 +1,12 @@
 package fr.esiee.babaisyou;
 
-public sealed interface Element permits Player, Flag, Empty {
-
+public interface Element {
     String representation();
+
+    boolean isName();
+
+    boolean isOperator();
+
+    boolean isProperty();
 
 }

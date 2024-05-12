@@ -11,23 +11,15 @@ public record Operator(String operator) implements Word {
   }
 
   @Override
-  public boolean isName() {
-    return false;
-  }
+  public boolean isName() { return false; }
 
   @Override
-  public boolean isOperator() {
-    return true;
-  }
+  public boolean isOperator() { return true; }
 
   @Override
-  public boolean isProperty() {
-    return false;
-  }
+  public boolean isProperty() { return false; }
 
   @Override
-  public String word() {
-    return operator;
-  }
+  public String representation() { return operator; }
+
 }
-

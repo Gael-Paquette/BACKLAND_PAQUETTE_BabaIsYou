@@ -25,21 +25,13 @@ public class GameBoard {
         }
     }
 
-    public int rows() {
-        return this.rows;
-    }
+    public int getRows() { return this.rows; }
 
-    public int cols() {
-        return this.cols;
-    }
+    public int getCols() { return this.cols; }
 
-    public Square getSquare(int x, int y) {
-        return this.board[x][y];
-    }
+    public Square getSquare(int x, int y) { return this.board[x][y]; }
 
-    public Element getElement(int x, int y) {
-        return this.board[x][y].element();
-    }
+    public Element getElement(int x, int y) { return this.board[x][y].element(); }
 
     public Square getSquarePlayer() {
         for(int i = 0 ; i < this.rows ; i++) {

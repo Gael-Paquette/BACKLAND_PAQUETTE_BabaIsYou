@@ -11,22 +11,15 @@ public record Property(String property) implements Word {
   }
 
   @Override
-  public boolean isName() {
-    return true;
-  }
+  public boolean isName() { return true; }
 
   @Override
-  public boolean isOperator() {
-    return false;
-  }
+  public boolean isOperator() { return false; }
 
   @Override
-  public boolean isProperty() {
-    return false;
-  }
+  public boolean isProperty() { return false; }
 
   @Override
-  public String word() {
-    return property;
-  }
+  public String representation() { return property; }
+
 }
