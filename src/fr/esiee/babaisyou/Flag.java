@@ -7,4 +7,9 @@ public record Flag() implements Element {
         return "F";
     }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
 }

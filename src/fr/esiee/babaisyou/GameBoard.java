@@ -51,6 +51,34 @@ public class GameBoard {
         return null;
     }
 
+    public void movePlayer(String direction) {
+        Square s = null;
+        Objects.requireNonNull(direction);
+        if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down")) {
+            throw new IllegalArgumentException("Invalid direction " + direction);
+        }
+        Square player = getSquarePlayer();
+        switch(direction) {
+            case "left":
+                s = getSquare(player.x(), player.y()+1);
+                break;
+            case "right":
+                s = getSquare(player.x(), player.y()-1);
+                break;
+            case "up":
+                s = getSquare(player.x()-1, player.y());
+                break;
+            case "down":
+                s = getSquare(player.x()+1, player.y());
+                break;
+        }
+        setElement(s.x(), s.y(), player.element());
+        if (s.element().isEmpty())
+            setElement(player.x(), player.y(), s.element());
+        else
+            setElement(player.x(), player.y(), new Empty());
+    }
+
     public Square getSquareFlag() {
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {

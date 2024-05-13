@@ -7,4 +7,9 @@ public record Empty() implements Element {
         return " ";
     }
 
+    @Override
+    public boolean isEmpty() {
+        return true;
+    }
+
 }

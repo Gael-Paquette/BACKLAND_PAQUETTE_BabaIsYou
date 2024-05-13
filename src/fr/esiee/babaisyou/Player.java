@@ -7,4 +7,9 @@ public record Player() implements Element {
         return "X";
     }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
 }
