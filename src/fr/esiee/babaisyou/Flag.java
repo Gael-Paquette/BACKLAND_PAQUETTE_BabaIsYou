@@ -14,4 +14,9 @@ public record Flag() implements Element {
     @Override
     public boolean isProperty() { return false; }
 
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
 }
