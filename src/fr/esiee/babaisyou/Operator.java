@@ -20,6 +20,9 @@ public record Operator(String operator) implements Word {
   public boolean isProperty() { return false; }
 
   @Override
+  public boolean isEmpty() { return false; }
+
+  @Override
   public String representation() { return operator; }
 
 }
