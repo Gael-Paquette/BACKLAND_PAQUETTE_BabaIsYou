@@ -24,4 +24,25 @@ public record Name(String name) implements Word {
 
   @Override
   public String representation() { return name; }
+
+  @Override
+  public boolean isWall() { return false; }
+
+  @Override
+  public boolean isPlayer() { return false; }
+
+  @Override
+  public boolean isWater() { return false; }
+
+  @Override
+  public boolean isSkull() { return false; }
+
+  @Override
+  public boolean isLava() { return false; }
+
+  @Override
+  public boolean isRock() { return false; }
+
+  @Override
+  public boolean isFlower() { return false; }
 }

@@ -11,4 +11,18 @@ public interface Element {
   
     boolean isEmpty();
 
+    boolean isWall();
+
+    boolean isPlayer();
+
+    boolean isWater();
+
+    boolean isSkull();
+
+    boolean isLava();
+
+    boolean isRock();
+
+    boolean isFlower();
+
 }

@@ -1,20 +1,14 @@
 package fr.esiee.babaisyou;
 
-import java.util.Objects;
-
-public record Operator(String operator) implements Word {
-  public Operator {
-    Objects.requireNonNull(operator);
-    if (!operator.equals("Is")) {
-      throw new IllegalArgumentException("Operator is not 'Is'");
-    }
-  }
+public record Wall() implements Element {
+  @Override
+  public String representation() { return "■"; }
 
   @Override
   public boolean isName() { return false; }
 
   @Override
-  public boolean isOperator() { return true; }
+  public boolean isOperator() { return false; }
 
   @Override
   public boolean isProperty() { return false; }
@@ -23,16 +17,13 @@ public record Operator(String operator) implements Word {
   public boolean isEmpty() { return false; }
 
   @Override
-  public String representation() { return operator; }
-
-  @Override
-  public boolean isWall() { return false; }
+  public boolean isWall() { return true; }
 
   @Override
   public boolean isPlayer() { return false; }
 
   @Override
-  public boolean isWater() { return false;}
+  public boolean isWater() { return false; }
 
   @Override
   public boolean isSkull() { return false; }
@@ -45,5 +36,4 @@ public record Operator(String operator) implements Word {
 
   @Override
   public boolean isFlower() { return false; }
-
 }
