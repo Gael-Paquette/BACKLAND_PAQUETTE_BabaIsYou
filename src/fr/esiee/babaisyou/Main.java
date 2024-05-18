@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Graphic.createWindow();
         int enter;
         System.out.println("Bienvenue sur ce projet");
         Scanner sc = new Scanner(System.in);
