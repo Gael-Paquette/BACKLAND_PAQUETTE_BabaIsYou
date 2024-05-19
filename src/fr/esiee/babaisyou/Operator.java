@@ -2,10 +2,12 @@ package fr.esiee.babaisyou;
 
 import java.util.Objects;
 
-public record Operator(String operator) implements Word {
+public record Operator(int x, int y, String name) implements Square {
   public Operator {
-    Objects.requireNonNull(operator);
-    if (!operator.equals("Is")) {
+    Objects.requireNonNull(name);
+    if(x < 0 || y < 0)
+      throw new IllegalArgumentException("x and y are negative");
+    if (!name.equals("Is")) {
       throw new IllegalArgumentException("Operator is not 'Is'");
     }
   }
@@ -20,30 +22,23 @@ public record Operator(String operator) implements Word {
   public boolean isProperty() { return false; }
 
   @Override
-  public boolean isEmpty() { return false; }
+  public boolean isElement() {
+    return false;
+  }
 
   @Override
-  public String representation() { return operator; }
+  public boolean isEmpty() {
+    return false;
+  }
 
   @Override
-  public boolean isWall() { return false; }
+  public boolean isPushable() {
+    return false;
+  }
 
   @Override
-  public boolean isPlayer() { return false; }
-
-  @Override
-  public boolean isWater() { return false;}
-
-  @Override
-  public boolean isSkull() { return false; }
-
-  @Override
-  public boolean isLava() { return false; }
-
-  @Override
-  public boolean isRock() { return false; }
-
-  @Override
-  public boolean isFlower() { return false; }
+  public String representation() {
+    return "";
+  }
 
 }
