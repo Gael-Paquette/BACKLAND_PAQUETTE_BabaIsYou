@@ -9,9 +9,8 @@ public class Rule {
     Objects.requireNonNull(leftOperand);
     Objects.requireNonNull(operator);
     Objects.requireNonNull(rightOperand);
-    if (!(leftOperand.isName()) || !(operator.isOperator()) || !(rightOperand.isProperty())) {
+    if (!(leftOperand.isName()) || !(operator.isOperator()) || !(rightOperand.isProperty()))
       return false;
-    }
 
     return (leftOperand.representation().equals(operator.representation()) || leftOperand.representation().equals(rightOperand.representation()));
   }

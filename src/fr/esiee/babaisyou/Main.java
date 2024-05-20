@@ -17,24 +17,28 @@ public class Main {
             System.out.println("3 : up");
             System.out.println("4 : down");
             direction = Integer.parseInt(sc.nextLine());
+
             switch(direction) {
                 case 1:
-                    if(gameBoard.block(gameBoard.getSquarePlayer(), "left"))
+                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "left"))
                         gameBoard.push("left");
                     gameBoard.movePlayer("left");
                     break;
                 case 2:
-                    if(gameBoard.block(gameBoard.getSquarePlayer(), "right"))
+
+                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "right"))
                         gameBoard.push("right");
                     gameBoard.movePlayer("right");
                     break;
                 case 3:
-                    if(gameBoard.block(gameBoard.getSquarePlayer(), "up"))
+
+                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "up"))
                         gameBoard.push("up");
                     gameBoard.movePlayer("up");
                     break;
                 case 4:
-                    if(gameBoard.block(gameBoard.getSquarePlayer(), "down"))
+
+                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "down"))
                         gameBoard.push("down");
                     gameBoard.movePlayer("down");
                     break;

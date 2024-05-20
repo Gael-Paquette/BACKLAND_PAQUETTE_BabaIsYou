@@ -3,14 +3,12 @@ package fr.esiee.babaisyou;
 import java.util.Objects;
 
 public record Object(int x, int y, String name) implements Square {
-
     public Object {
         Objects.requireNonNull(name);
         if(x < 0 || y < 0)
             throw new IllegalArgumentException("x and y are negative");
-        if (!name.equals("null") && !name.equals("Baba") && !name.equals("Flag") && !name.equals("Wall") && !name.equals("Water") && !name.equals("Skull") && !name.equals("Lava") && !name.equals("Rock")) {
+        if (!name.equals("null") && !name.equals("Baba") && !name.equals("Flag") && !name.equals("Wall") && !name.equals("Water") && !name.equals("Skull") && !name.equals("Lava") && !name.equals("Rock"))
             throw new IllegalArgumentException("Invalid name: " + name);
-        }
     }
 
     @Override
@@ -41,5 +39,4 @@ public record Object(int x, int y, String name) implements Square {
             default -> " ";
         };
     }
-
 }

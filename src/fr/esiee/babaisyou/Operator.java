@@ -7,9 +7,8 @@ public record Operator(int x, int y, String name) implements Square {
     Objects.requireNonNull(name);
     if(x < 0 || y < 0)
       throw new IllegalArgumentException("x and y are negative");
-    if (!name.equals("Is")) {
+    if (!name.equals("Is"))
       throw new IllegalArgumentException("Operator is not 'Is'");
-    }
   }
 
   @Override
@@ -31,5 +30,4 @@ public record Operator(int x, int y, String name) implements Square {
   public String representation() {
     return "";
   }
-
 }

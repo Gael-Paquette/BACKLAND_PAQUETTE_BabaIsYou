@@ -1,7 +1,7 @@
 package fr.esiee.babaisyou;
 
 public sealed interface Square permits Name, Operator, Property, Object {
-
+  
   int x();
 
   int y();

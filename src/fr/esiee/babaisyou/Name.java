@@ -7,9 +7,8 @@ public record Name(int x, int y, String name) implements Square {
     Objects.requireNonNull(name);
     if(x < 0 || y < 0)
       throw new IllegalArgumentException("x and y are negative");
-    if (!name.equals("Baba") && !name.equals("Flag") && !name.equals("Wall") && !name.equals("Water") && !name.equals("Skull") && !name.equals("Lava") && !name.equals("Rock")) {
+    if (!name.equals("Baba") && !name.equals("Flag") && !name.equals("Wall") && !name.equals("Water") && !name.equals("Skull") && !name.equals("Lava") && !name.equals("Rock"))
       throw new IllegalArgumentException("Invalid name: " + name);
-    }
   }
 
   @Override
@@ -40,5 +39,4 @@ public record Name(int x, int y, String name) implements Square {
           default -> "";
       };
   }
-
 }
