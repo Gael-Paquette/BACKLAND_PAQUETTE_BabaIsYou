@@ -22,19 +22,10 @@ public record Operator(int x, int y, String name) implements Square {
   public boolean isProperty() { return false; }
 
   @Override
-  public boolean isElement() {
-    return false;
-  }
+  public boolean isObject() { return false; }
 
   @Override
-  public boolean isEmpty() {
-    return false;
-  }
-
-  @Override
-  public boolean isPushable() {
-    return false;
-  }
+  public boolean isEmpty() { return false; }
 
   @Override
   public String representation() {

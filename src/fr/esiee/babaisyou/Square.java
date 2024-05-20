@@ -14,11 +14,9 @@ public sealed interface Square permits Name, Operator, Property, Object {
 
   boolean isProperty();
 
-  boolean isElement();
+  boolean isObject();
 
   boolean isEmpty();
-
-  boolean isPushable();
 
   String representation();
 

@@ -26,22 +26,21 @@ public class GameBoard {
         setSquare(0,0, new Object(0,0, "Baba"));
         setSquare(0,9, new Object(0, 9, "Flag"));
         setSquare(5, 3, new Object(5, 3, "Rock"));
-        // setSquare(5, 4, new Element(5, 4, "Rock"));
-        // (5, 5, new Element(5, 5, "Rock"));
-        // setSquare(5, 6, new Element(5, 6, "Rock"));
     }
 
     public int getRows() { return this.rows; }
 
     public int getCols() { return this.cols; }
 
-    public boolean inTheBoard(int x, int y) { return (x >= 0 && x < rows) && (y >= 0 && y < cols); }
-
     public Square getSquare(int x, int y) {
         if(inTheBoard(x, y))
             return this.board[x][y];
         return null;
     }
+
+    public boolean inTheBoard(int x, int y) { return (x >= 0 && x < rows) && (y >= 0 && y < cols); }
+
+    public boolean notInTheBoard(Square s) { return s == null; }
 
     public void setSquare(int x, int y, Square square) {
         Objects.requireNonNull(square);
@@ -80,41 +79,77 @@ public class GameBoard {
             }
             while (square != null && square.representation().equals("*")) {
                 count++;
-                square = getSquareDirection(direction, square.x(), square.y());
+                square = getSquareDirection(square.x(), square.y(), direction);
             }
         }
         return count;
     }
 
-    private Square getSquareDirection(String direction, int x, int y) {
+    public boolean block(Square player, String direction) {
+        Objects.requireNonNull(player);
         Objects.requireNonNull(direction);
         if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down")) {
             throw new IllegalArgumentException("Invalid direction " + direction);
         }
-        return switch (direction) {
-            case "left" -> getSquare(x, y-1);
-            case "right" -> getSquare(x, y+1);
-            case "up" -> getSquare(x-1, y);
-            case "down" -> getSquare(x+1, y);
-            default -> null;
-        };
+        if(!notInTheBoard(player) && !notInTheBoard(getSquareDirection(player.x(), player.y(), direction)))
+            return getSquareDirection(player.x(), player.y(), direction).isObject() && getSquareDirection(player.x(), player.y(), direction).name().equals("Rock");
+        return false;
     }
 
-    public void movePlayer(String direction) {
-        Square s;
+    public void push(String direction) {
         Objects.requireNonNull(direction);
         if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down")) {
             throw new IllegalArgumentException("Invalid direction " + direction);
         }
         Square player = getSquarePlayer();
-        System.out.println(player.x() + "," + player.y());
-        s = getSquareDirection(direction, player.x(), player.y());
-        if(s != null && s.isElement()) {
-            Square newPlayer = new Object(s.x(), s.y(), player.name());
-            // Square newEmpty = new Element(player.x(), player.y(), s.name());
-            Square newEmpty = new Object(player.x(), player.y(), "null");
-            setSquare(s.x(), s.y(), newPlayer);
-            setSquare(player.x(), player.y(), newEmpty);
+        if(notInTheBoard(player)) return;
+        Square block = getSquareDirection(player.x(), player.y(), direction);
+        if(notInTheBoard(block)) return;
+        if(!notInTheBoard(getSquareDirection(block.x(), block.y(), direction))) {
+            if(getSquareDirection(block.x(), block.y(), direction).isEmpty()) {
+                setSquare(
+                        getSquareDirection(block.x(), block.y(), direction).x(),
+                        getSquareDirection(block.x(), block.y(), direction).y(),
+                        new Object(getSquareDirection(block.x(), block.y(), direction).x(), getSquareDirection(block.x(), block.y(), direction).y(), "Rock")
+                );
+                setSquare(
+                        block.x(),
+                        block.y(),
+                        new Object(block.x(), block.y(), "null")
+                );
+            }
+        }
+    }
+
+    private Square getSquareDirection(int x, int y, String direction) {
+        Objects.requireNonNull(direction);
+        if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down")) {
+            throw new IllegalArgumentException("Invalid direction " + direction);
+        }
+        if(inTheBoard(x, y)) {
+            return switch (direction) {
+                case "left" -> getSquare(x, y - 1);
+                case "right" -> getSquare(x, y + 1);
+                case "up" -> getSquare(x - 1, y);
+                case "down" -> getSquare(x + 1, y);
+                default -> null;
+            };
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public void movePlayer(String direction) {
+        Objects.requireNonNull(direction);
+        Square player = getSquarePlayer();
+        Square s  = getSquareDirection(player.x(), player.y(), direction);
+        if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down")) {
+            throw new IllegalArgumentException("Invalid direction " + direction);
+        }
+        if(!notInTheBoard(s)) {
+            if(s.isEmpty() || s.name().equals("Flag")) {
+                setSquare(s.x(), s.y(), new Object(s.x(), s.y(), player.name()));
+                setSquare(player.x(), player.y(), new Object(player.x(), player.y(), "null"));
+            }
         }
     }
 

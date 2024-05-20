@@ -4,24 +4,41 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int enter;
-        System.out.println("Bienvenue sur ce projet");
+        int direction;
         Scanner sc = new Scanner(System.in);
 
         GameBoard gameBoard = new GameBoard(10,10);
         gameBoard.displayBoard();
-        System.out.println("rocks : " + gameBoard.countElementToPush(5, 3, "right"));
 
         do {
-            enter = Integer.parseInt(sc.nextLine());
-            if(enter == 1)
-                gameBoard.movePlayer("left");
-            else if(enter == 2)
-                gameBoard.movePlayer("right");
-            else if(enter == 3)
-                gameBoard.movePlayer("up");
-            else if(enter == 4)
-                gameBoard.movePlayer("down");
+            System.out.println("Enter the direction : ");
+            System.out.println("1 : left");
+            System.out.println("2 : right");
+            System.out.println("3 : up");
+            System.out.println("4 : down");
+            direction = Integer.parseInt(sc.nextLine());
+            switch(direction) {
+                case 1:
+                    if(gameBoard.block(gameBoard.getSquarePlayer(), "left"))
+                        gameBoard.push("left");
+                    gameBoard.movePlayer("left");
+                    break;
+                case 2:
+                    if(gameBoard.block(gameBoard.getSquarePlayer(), "right"))
+                        gameBoard.push("right");
+                    gameBoard.movePlayer("right");
+                    break;
+                case 3:
+                    if(gameBoard.block(gameBoard.getSquarePlayer(), "up"))
+                        gameBoard.push("up");
+                    gameBoard.movePlayer("up");
+                    break;
+                case 4:
+                    if(gameBoard.block(gameBoard.getSquarePlayer(), "down"))
+                        gameBoard.push("down");
+                    gameBoard.movePlayer("down");
+                    break;
+            }
             gameBoard.displayBoard();
         } while(gameBoard.getSquareFlag() != null);
 

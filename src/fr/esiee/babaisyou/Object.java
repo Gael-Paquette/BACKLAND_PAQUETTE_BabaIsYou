@@ -14,34 +14,19 @@ public record Object(int x, int y, String name) implements Square {
     }
 
     @Override
-    public boolean isName() {
-        return false;
-    }
+    public boolean isName() { return false; }
 
     @Override
-    public boolean isOperator() {
-        return false;
-    }
+    public boolean isOperator() { return false; }
 
     @Override
-    public boolean isProperty() {
-        return false;
-    }
+    public boolean isProperty() { return false; }
 
     @Override
-    public boolean isElement() {
-        return true;
-    }
+    public boolean isObject() { return true; }
 
     @Override
-    public boolean isEmpty() {
-        return this.name().equals("null");
-    }
-
-    @Override
-    public boolean isPushable() {
-        return this.name.equals("Rock");
-    }
+    public boolean isEmpty() { return this.name().equals("null"); }
 
     @Override
     public String representation() {
