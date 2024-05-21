@@ -46,12 +46,17 @@ public class GameBoard {
 
     public boolean notInTheBoard(Square s) { return s == null; }
 
-    public boolean isPushable(Square s, String direction) {
+    public boolean canMove(Square s, String direction) {
         Objects.requireNonNull(s);
         Objects.requireNonNull(direction);
         validDirection(direction);
         Square next = nextSquare(s.x(), s.y(), direction);
         return !notInTheBoard(next) && next.isEmpty();
+    }
+
+    public boolean isPushableRule() {
+        Rule rule = new Rule();
+        return rule.isValidRule1(this, "Rock", "Is", "Push");
     }
 
     public void validDirection(String direction) {
@@ -94,7 +99,7 @@ public class GameBoard {
         if (!notInTheBoard(player)) {
             block = nextSquare(player.x(), player.y(), direction);
             validDirection(direction);
-            while (block != null && ( (block.isObject() && !block.isEmpty()) || block.isName() || block.isOperator() || block.isProperty() )) { // A CORRIGER
+            while (block != null && ( (block.isObject() && !block.isEmpty()) || block.isName() || block.isOperator() || block.isProperty() )) {
                 count++;
                 block = nextSquare(block.x(), block.y(), direction);
             }
@@ -131,11 +136,14 @@ public class GameBoard {
             if (notInTheBoard(block)) return;
         }
 
-        if(!isPushable(block, direction)) return;
+        if(!canMove(block, direction)) return;
+        boolean rule = isPushableRule();
 
         current = block;
         for (i = 1; i <= countElementToPush; i++) {
             currentNext = nextSquare(current.x(), current.y(), direction);
+            if(!rule && nextSquare(player.x(), player.y(), direction).representation().equals("*"))
+                return;
             moveBlock(current, currentNext);
             current = nextSquareReverse(current.x(), current.y(), direction);
         }
