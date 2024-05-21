@@ -12,13 +12,13 @@ public record Property(int x, int y, String name) implements Square {
   }
 
   @Override
-  public boolean isName() { return true; }
+  public boolean isName() { return false; }
 
   @Override
   public boolean isOperator() { return false; }
 
   @Override
-  public boolean isProperty() { return false; }
+  public boolean isProperty() { return true; }
 
   @Override
   public boolean isObject() { return false; }
@@ -28,6 +28,16 @@ public record Property(int x, int y, String name) implements Square {
 
   @Override
   public String representation() {
-    return "";
+    return switch (name) {
+      case "You" -> "Y";
+      case "Win" -> "F";
+      case "Stop" -> "S";
+      case "Push" -> "P";
+      case "Melt" -> "M";
+      case "Hot" -> "H";
+      case "Defeat" -> "D";
+      case "Sink" -> "S";
+      default -> " ";
+    };
   }
 }

@@ -1,10 +1,8 @@
 package fr.esiee.babaisyou;
 
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
 import java.util.Objects;
 
 public class Rule {
-  // Vérifie si une combinaison spécifique de mots constitue une règle valide selon les conditions données dans le jeu Baba Is You
   private static boolean isValidRuleCombination(Square leftOperand, Square operator, Square rightOperand) {
     Objects.requireNonNull(leftOperand);
     Objects.requireNonNull(operator);
@@ -57,10 +55,10 @@ public class Rule {
     return false;
   }
 
-  // Vérifie si une règle est valide sur le plateaude jeu fourni. Les règles sont vérifiées horizontalement et verticalement.
+
   public boolean isValidRule(GameBoard board) {
     Objects.requireNonNull(board);
-    // Check all horizontal rules
+
     for (var i = 0; i < board.getRows(); i++) {
       for (var j = 0; j < board.getCols() - 2; j++) {
         if (isValidHorizontalRule(board, i, j)) {
@@ -68,7 +66,7 @@ public class Rule {
         }
       }
     }
-    // Check all vertical rules
+
     for (var i = 0; i < board.getRows() - 2; i++) {
       for (var j = 0; j < board.getCols(); j++) {
         if (isValidVerticalRule(board, i, j)) {

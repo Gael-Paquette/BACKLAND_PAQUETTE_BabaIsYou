@@ -28,6 +28,6 @@ public record Operator(int x, int y, String name) implements Square {
 
   @Override
   public String representation() {
-    return "";
+    return "I";
   }
 }

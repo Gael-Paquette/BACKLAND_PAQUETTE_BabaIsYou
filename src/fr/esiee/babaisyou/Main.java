@@ -25,19 +25,16 @@ public class Main {
                     gameBoard.movePlayer("left");
                     break;
                 case 2:
-
                     if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "right"))
                         gameBoard.push("right");
                     gameBoard.movePlayer("right");
                     break;
                 case 3:
-
                     if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "up"))
                         gameBoard.push("up");
                     gameBoard.movePlayer("up");
                     break;
                 case 4:
-
                     if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "down"))
                         gameBoard.push("down");
                     gameBoard.movePlayer("down");
@@ -48,5 +45,4 @@ public class Main {
 
         System.out.println("Victory !");
     }
-
 }

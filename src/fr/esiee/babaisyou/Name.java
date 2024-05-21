@@ -35,7 +35,7 @@ public record Name(int x, int y, String name) implements Square {
           case "Water" -> "~";
           case "Skull" -> "\\uD83D\\uDC80";
           case "Lava" -> "§S";
-          case "Rock" -> "*";
+          case "Rock" -> "R";
           default -> "";
       };
   }
