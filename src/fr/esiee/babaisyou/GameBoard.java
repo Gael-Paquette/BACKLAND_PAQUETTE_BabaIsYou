@@ -55,6 +55,7 @@ public class GameBoard {
     }
 
     public void validDirection(String direction) {
+        Objects.requireNonNull(direction);
         if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down"))
             throw new IllegalArgumentException("Invalid direction " + direction);
     }
@@ -123,10 +124,10 @@ public class GameBoard {
         return rule.isValidRule(this, name, operator, property);
     }
 
-    public boolean canPushChain(int elements, String direction, String n) {
+    public boolean canPushChain(int elements, String direction, String nameOfTheBlock) {
         Square block = nextSquare(getSquarePlayer().x(), getSquarePlayer().y(), direction);
         for(int i = 1 ; i <= elements ; i++) {
-            if(block.representation().equals(n)) {
+            if(block.representation().equals(nameOfTheBlock)) {
                 return false;
             }
             block = nextSquare(block.x(), block.y(), direction);
@@ -214,6 +215,8 @@ public class GameBoard {
     }
 
     public void moveBlock(Square from, Square to) {
+        Objects.requireNonNull(from);
+        Objects.requireNonNull(to);
         if (from.isObject())
             setSquare(to.x(), to.y(), new Object(to.x(), to.y(), from.name()));
         else if (from.isName())
