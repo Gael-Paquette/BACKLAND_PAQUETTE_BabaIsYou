@@ -56,7 +56,7 @@ public class GameBoard {
 
     public boolean isPushableRule() {
         Rule rule = new Rule();
-        return rule.isValidRule1(this, "Rock", "Is", "Push");
+        return rule.isValidRule(this, "Rock", "Is", "Push");
     }
 
     public void validDirection(String direction) {
@@ -140,6 +140,7 @@ public class GameBoard {
         boolean rule = isPushableRule();
 
         current = block;
+        /* A CORRIGER - UN BLOC NE DOIT PAS ETRE POUSSE PAR UN OPERATEUR, UNE PROPRIETE OU UN NOM*/
         for (i = 1; i <= countElementToPush; i++) {
             currentNext = nextSquare(current.x(), current.y(), direction);
             if(!rule && nextSquare(player.x(), player.y(), direction).representation().equals("*"))
