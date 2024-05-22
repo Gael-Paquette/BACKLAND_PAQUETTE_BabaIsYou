@@ -24,9 +24,6 @@ public record Property(int x, int y, String name) implements Square {
   public boolean isObject() { return false; }
 
   @Override
-  public boolean isPushable(GameBoard board, Square square) { return true; }
-
-  @Override
   public boolean isEmpty() { return false; }
 
   @Override

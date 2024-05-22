@@ -54,11 +54,6 @@ public class GameBoard {
         return !notInTheBoard(next) && next.isEmpty();
     }
 
-    public boolean isPushableRule() {
-        Rule rule = new Rule();
-        return rule.isValidRule(this, "Rock", "Is", "Push");
-    }
-
     public void validDirection(String direction) {
         if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down"))
             throw new IllegalArgumentException("Invalid direction " + direction);
@@ -113,16 +108,36 @@ public class GameBoard {
         if (notInTheBoard(player)) return false;
         validDirection(direction);
 
-        if (!notInTheBoard(nextSquare(player.x(), player.y(), direction)))
-            return ( (nextSquare(player.x(), player.y(), direction).isObject() && !nextSquare(player.x(), player.y(), direction).name().equals("null")) || nextSquare(player.x(), player.y(), direction).isName() || nextSquare(player.x(), player.y(), direction).isOperator() || nextSquare(player.x(), player.y(), direction).isProperty());
+        Square next = nextSquare(player.x(), player.y(), direction);
+        if (!notInTheBoard(next))
+            return (next.isObject() && !next.name().equals("null")) || (next.isName()) || (next.isOperator()) || (next.isProperty());
 
         return false;
+    }
+
+    public boolean isRuleActive(String name, String operator, String property) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(operator);
+        Objects.requireNonNull(property);
+        Rule rule = new Rule();
+        return rule.isValidRule(this, name, operator, property);
+    }
+
+    public boolean canPushChain(int elements, String direction, String n) {
+        Square block = nextSquare(getSquarePlayer().x(), getSquarePlayer().y(), direction);
+        for(int i = 1 ; i <= elements ; i++) {
+            if(block.representation().equals(n)) {
+                return false;
+            }
+            block = nextSquare(block.x(), block.y(), direction);
+        }
+        return true;
     }
 
     public void push(String direction) {
         Objects.requireNonNull(direction);
         int countElementToPush, i;
-        Square block, current, currentNext, player = getSquarePlayer();
+        Square block, current, currentNext, playerNext, player = getSquarePlayer();
         validDirection(direction);
 
         if (notInTheBoard(player)) return;
@@ -137,14 +152,19 @@ public class GameBoard {
         }
 
         if(!canMove(block, direction)) return;
-        boolean rule = isPushableRule();
 
         current = block;
-        /* A CORRIGER - UN BLOC NE DOIT PAS ETRE POUSSE PAR UN OPERATEUR, UNE PROPRIETE OU UN NOM*/
         for (i = 1; i <= countElementToPush; i++) {
             currentNext = nextSquare(current.x(), current.y(), direction);
-            if(!rule && nextSquare(player.x(), player.y(), direction).representation().equals("*"))
+            playerNext = nextSquare(player.x(), player.y(), direction);
+            if(playerNext.representation().equals("*") && (!isRuleActive("Rock", "Is", "Push")))
                 return;
+            if( (playerNext.isName() || playerNext.isOperator() || playerNext.isProperty()) && (!isRuleActive("Rock", "Is", "Push"))
+                && !canPushChain(countElementToPush, direction, "*"))
+                return;
+
+            // AUTRES CONDTIONS A INDIQUER PAR LA SUITE (TROUVER UNE AUTRE SOLUTION POUR EVITER DE SURCHARGER LA METHODE)
+
             moveBlock(current, currentNext);
             current = nextSquareReverse(current.x(), current.y(), direction);
         }
