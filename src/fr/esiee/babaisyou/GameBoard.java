@@ -125,6 +125,9 @@ public class GameBoard {
     }
 
     public boolean canPushChain(int elements, String direction, String nameOfTheBlock) {
+        Objects.requireNonNull(direction);
+        Objects.requireNonNull(nameOfTheBlock);
+        validDirection(direction);
         Square block = nextSquare(getSquarePlayer().x(), getSquarePlayer().y(), direction);
         for(int i = 1 ; i <= elements ; i++) {
             if(block.representation().equals(nameOfTheBlock)) {
@@ -137,9 +140,9 @@ public class GameBoard {
 
     public void push(String direction) {
         Objects.requireNonNull(direction);
+        validDirection(direction);
         int countElementToPush, i;
         Square block, current, currentNext, playerNext, player = getSquarePlayer();
-        validDirection(direction);
 
         if (notInTheBoard(player)) return;
         block = nextSquare(player.x(), player.y(), direction);
@@ -203,9 +206,9 @@ public class GameBoard {
 
     public void movePlayer(String direction) {
         Objects.requireNonNull(direction);
+        validDirection(direction);
         Square player = getSquarePlayer();
         Square s  = nextSquare(player.x(), player.y(), direction);
-        validDirection(direction);
         if(!notInTheBoard(s)) {
             if(s.isEmpty() || s.name().equals("Flag")) {
                 setSquare(s.x(), s.y(), new Object(s.x(), s.y(), player.name()));
