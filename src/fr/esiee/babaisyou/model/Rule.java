@@ -1,11 +1,10 @@
-package fr.esiee.babaisyou;
+package fr.esiee.babaisyou.model;
 
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
 import java.util.Objects;
 
 public class Rule {
   // Vérifie si une combinaison spécifique de mots constitue une règle valide selon les conditions données dans le jeu Baba Is You
-  private static boolean isValidRuleCombination(Element leftOperand, Element operator, Element rightOperand) {
+  private static boolean isValidRuleCombination(Square leftOperand, Square operator, Square rightOperand) {
     Objects.requireNonNull(leftOperand);
     Objects.requireNonNull(operator);
     Objects.requireNonNull(rightOperand);
@@ -22,7 +21,7 @@ public class Rule {
       throw new IllegalArgumentException("x or y out of bounds");
     }
 
-    return isValidRuleCombination(board.getElement(x, y), board.getElement(x + 1, y), board.getElement(x + 2, y));
+    return isValidRuleCombination(board.getSquare(x, y), board.getSquare(x + 1, y), board.getSquare(x + 2, y));
   }
 
   private static boolean isValidVerticalRule(GameBoard board, int x, int y) {
@@ -31,14 +30,14 @@ public class Rule {
       throw new IllegalArgumentException("x or y out of bounds");
     }
 
-    return isValidRuleCombination(board.getElement(x, y), board.getElement(x, y + 1), board.getElement(x, y + 2));
+    return isValidRuleCombination(board.getSquare(x, y), board.getSquare(x, y + 1), board.getSquare(x, y + 2));
   }
 
   private static boolean isPlayerPresent(GameBoard board) {
     Objects.requireNonNull(board);
     for (var i = 0; i < board.getRows(); i++) {
       for (var j = 0; j< board.getCols(); j++) {
-        if (board.getElement(i, j).isProperty() && board.getElement(i, j).representation().equals("You")) {
+        if (board.getSquare(i, j).isProperty() && board.getSquare(i, j).representation().equals("You")) {
           return true;
         }
       }
@@ -50,7 +49,7 @@ public class Rule {
     Objects.requireNonNull(board);
     for (var i = 0; i < board.getRows(); i++) {
       for (var j = 0; j< board.getCols(); j++) {
-        if (board.getElement(i, j).isProperty() && board.getElement(i, j).representation().equals("Win")) {
+        if (board.getSquare(i, j).isProperty() && board.getSquare(i, j).representation().equals("Win")) {
           return true;
         }
       }
