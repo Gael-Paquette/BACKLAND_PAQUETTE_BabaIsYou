@@ -41,8 +41,8 @@ public class Rule {
       throw new IllegalArgumentException("x or y out of bounds");
     }
     s = board.getSquare(x, y);
-    next1 = board.nextSquare(s.x(), s.y(), direction);
-    next2 = board.nextSquare(next1.x(), next1.y(), direction);
+    next1 = board.nextSquare(s.getX(), s.getY(), direction);
+    next2 = board.nextSquare(next1.getX(), next1.getY(), direction);
     return s.name().equals(name) && next1.name().equals(operator) && next2.name().equals(property);
   }
 

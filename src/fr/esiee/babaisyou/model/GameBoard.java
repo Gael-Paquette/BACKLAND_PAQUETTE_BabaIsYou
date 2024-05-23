@@ -25,6 +25,13 @@ public class GameBoard {
         }
     }
 
+    public void updateSquare(int row, int col, Square square) {
+        Objects.requireNonNull(this.board[row][col]);
+        if (inTheBoard(row, col)) {
+            this.board[row][col] = square;
+        }
+    }
+
     public int getRows() { return this.rows; }
 
     public int getCols() { return this.cols; }

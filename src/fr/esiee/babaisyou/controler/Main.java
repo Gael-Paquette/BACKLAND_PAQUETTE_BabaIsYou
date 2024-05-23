@@ -19,7 +19,25 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         GameBoard gameBoard = new GameBoard(10,10);
+        ImagesLoader imagesLoader = new ImagesLoader(
+                List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
+                List.of("IS", "ON", "HAS", "AND"),
+                List.of("YOU", "WIN", "STOP", "PUSH", "MELT", "HOT", "DEFEAT", "SINK")
+        );
+        System.out.println(imagesLoader.getImagesObject());
+        System.out.println(imagesLoader.getImagesText());
         gameBoard.displayBoard();
+        gameBoard.updateSquare(1, 1, new Name(1, 1, "BABA"));
+        gameBoard.updateSquare(1, 2, new Operator(1, 2, "IS"));
+        gameBoard.updateSquare(1, 3, new Property(1, 3, "YOU"));
+        gameBoard.displayBoard();
+
+        Application.run(Color.BLACK, context -> {
+            var screenInfo = context.getScreenInfo();
+            var width = screenInfo.width();
+            var height = screenInfo.height();
+            Graphic.draw(context, gameBoard, imagesLoader, width, height);
+        });
 
         do {
             System.out.println("Enter the direction : ");

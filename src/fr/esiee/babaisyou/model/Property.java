@@ -40,14 +40,14 @@ public record Property(int x, int y, String name) implements Square {
   @Override
   public String representation() {
     return switch (name) {
-      case "You" -> "Y";
-      case "Win" -> "F";
-      case "Stop" -> "S";
-      case "Push" -> "P";
-      case "Melt" -> "M";
-      case "Hot" -> "H";
-      case "Defeat" -> "D";
-      case "Sink" -> "S";
+      case "YOU" -> "Y";
+      case "WIN" -> "F";
+      case "STOP" -> "S";
+      case "PUSH" -> "P";
+      case "MELT" -> "M";
+      case "HOT" -> "H";
+      case "DEFEAT" -> "D";
+      case "SINK" -> "S";
       default -> throw new IllegalStateException("Unexpected value: " + name);
     };
   }

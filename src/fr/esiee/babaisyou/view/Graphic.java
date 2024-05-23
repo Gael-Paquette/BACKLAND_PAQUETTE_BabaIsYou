@@ -6,7 +6,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-import com.github.forax.zen.Application;
 import com.github.forax.zen.ApplicationContext;
 import fr.esiee.babaisyou.model.GameBoard;
 
@@ -26,7 +25,7 @@ public class Graphic {
     graphics2D.drawImage(image, transform, null);
   }
 
-  private void drawCell(Graphics2D graphics, GameBoard gameBoard, ImagesLoader imagesLoader, int row, int col, int width, int height) {
+  public static void drawCell(Graphics2D graphics, GameBoard gameBoard, ImagesLoader imagesLoader, int row, int col, int width, int height) {
     Objects.requireNonNull(graphics);
     Objects.requireNonNull(gameBoard);
     var widthSquare = width / gameBoard.getRows() - 10;
@@ -43,7 +42,7 @@ public class Graphic {
     }
   }
 
-  private void drawGameBoard(Graphics2D graphics, GameBoard gameBoard, ImagesLoader imagesLoader, int width, int height) {
+  public static void drawGameBoard(Graphics2D graphics, GameBoard gameBoard, ImagesLoader imagesLoader, int width, int height) {
     Objects.requireNonNull(graphics);
     Objects.requireNonNull(gameBoard);
     Objects.requireNonNull(imagesLoader);
@@ -59,13 +58,12 @@ public class Graphic {
     }
   }
 
-  public static void draw(ApplicationContext context, GameBoard gameBoard, ImagesLoader imagesLoader, Graphic view, int width, int height) {
+  public static void draw(ApplicationContext context, GameBoard gameBoard, ImagesLoader imagesLoader, int width, int height) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(gameBoard);
     Objects.requireNonNull(imagesLoader);
-    Objects.requireNonNull(view);
     context.renderFrame(graphics -> {
-      view.drawGameBoard(graphics, gameBoard, imagesLoader, width, height);
+      drawGameBoard(graphics, gameBoard, imagesLoader, width, height);
     });
   }
 }
