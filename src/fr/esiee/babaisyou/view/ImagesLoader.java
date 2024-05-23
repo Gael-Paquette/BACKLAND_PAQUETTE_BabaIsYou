@@ -17,15 +17,15 @@ public class ImagesLoader {
     Objects.requireNonNull(name);
     Objects.requireNonNull(type);
     return switch (type) {
-      case NOUNS -> Paths.get("images/NOUNS/" + name + "/" + name + ".gif");
-      case OPERATORS -> Paths.get("images/OPERATORS/" + name + "/" + name + ".gif");
-      case PROPERTIES -> Paths.get("images/PROPERTIES/" + name + "/" + name + ".gif");
+      case NOUNS -> Paths.get("images/NOUNS/" + name + "/" + name + ".png");
+      case OPERATORS -> Paths.get("images/OPERATORS/" + name + "/" + name + ".png");
+      case PROPERTIES -> Paths.get("images/PROPERTIES/" + name + "/" + name + ".png");
     };
   }
 
   private Path createPathObject(String name) {
     Objects.requireNonNull(name);
-    return Paths.get("images/NOUNS/" + name + "/" + name + "_GIF.gif");
+    return Paths.get("images/NOUNS/" + name + "/" + name + "_GIF.png");
   }
 
   private void loadImage(String name, Path path, boolean isText) {

@@ -32,12 +32,14 @@ public class Main {
         gameBoard.updateSquare(1, 3, new Property(1, 3, "YOU"));
         gameBoard.displayBoard();
 
+        /*
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
             Graphic.draw(context, gameBoard, imagesLoader, width, height);
         });
+        */
 
         do {
             System.out.println("Enter the direction : ");
