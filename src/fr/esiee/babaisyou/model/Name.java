@@ -38,6 +38,17 @@ public record Name(int x, int y, String name) implements Square {
   public boolean isPushable() { return false; }
 
   @Override
-  public String representation() { return name; }
-
+  public String representation() {
+    return switch (name) {
+      case "BABA" -> "B";
+      case "FLAG" -> "F";
+      case "WALL" -> "W";
+      case "WATER" -> "W";
+      case "SKULL" -> "S";
+      case "LAVA" -> "L";
+      case "ROCK" -> "R";
+      case "FLOWER" -> "F";
+      default -> throw new IllegalStateException("Unexpected value: " + name);
+    };
+  }
 }

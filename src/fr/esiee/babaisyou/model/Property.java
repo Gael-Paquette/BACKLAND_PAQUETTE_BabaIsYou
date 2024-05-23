@@ -12,7 +12,7 @@ public record Property(int x, int y, String name) implements Square {
       throw new IllegalArgumentException("X and Y coordinates must be greater than or equal to 0");
     }
   }
-
+  
   @Override
   public int getX() { return x; }
 
@@ -38,6 +38,17 @@ public record Property(int x, int y, String name) implements Square {
   public boolean isPushable() { return false; }
 
   @Override
-  public String representation() { return name; }
-
+  public String representation() {
+    return switch (name) {
+      case "You" -> "Y";
+      case "Win" -> "F";
+      case "Stop" -> "S";
+      case "Push" -> "P";
+      case "Melt" -> "M";
+      case "Hot" -> "H";
+      case "Defeat" -> "D";
+      case "Sink" -> "S";
+      default -> throw new IllegalStateException("Unexpected value: " + name);
+    };
+  }
 }

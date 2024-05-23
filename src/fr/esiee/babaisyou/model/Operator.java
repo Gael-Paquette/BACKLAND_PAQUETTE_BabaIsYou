@@ -38,6 +38,13 @@ public record Operator(int x, int y, String name) implements Square {
   public boolean isPushable() { return false; }
 
   @Override
-  public String representation() { return name; }
-
+  public String representation() {
+    return switch (name) {
+      case "IS" -> "I";
+      case "ON" -> "O";
+      case "HAS" -> "H";
+      case "ROCK" -> "R";
+      default -> throw new IllegalStateException("Unexpected value: " + name);
+    };
+  }
 }
