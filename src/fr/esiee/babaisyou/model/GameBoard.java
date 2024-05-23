@@ -1,5 +1,6 @@
 package fr.esiee.babaisyou.model;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class GameBoard {
@@ -22,14 +23,6 @@ public class GameBoard {
                 board[i][j] = new Object(i, j, "NULL");
             }
         }
-        setSquare(0,0, new Object(0,0, "BABA"));
-        setSquare(0,9, new Object(0, 9, "FLAG"));
-        setSquare(5, 3, new Object(5, 3, "ROCK"));
-        setSquare(5, 4, new Object(5, 4, "ROCK"));
-        setSquare(5, 5, new Object(5, 5, "ROCK"));
-        setSquare(8, 3, new Name(8, 3, "ROCK"));
-        setSquare(8, 4, new Operator(8, 4, "IS"));
-        setSquare(8, 5, new Property(8, 5, "PUSH"));
     }
 
     public int getRows() { return this.rows; }
@@ -70,7 +63,6 @@ public class GameBoard {
     public Square getSquarePlayer() {
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                if(this.getSquare(i,j).representation().equals("X"))
                     return this.board[i][j];
             }
         }
@@ -102,7 +94,7 @@ public class GameBoard {
         }
         return count;
     }
-
+  
     public boolean facingABlock(Square player, String direction) {
         Objects.requireNonNull(player);
         Objects.requireNonNull(direction);

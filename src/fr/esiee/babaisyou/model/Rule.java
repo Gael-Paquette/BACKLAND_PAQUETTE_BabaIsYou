@@ -11,12 +11,12 @@ public class Rule {
     Objects.requireNonNull(operator);
     Objects.requireNonNull(property);
 
-    var names = List.of("Baba", "Flag", "Wall", "Water", "Skull", "Lava", "Rock");
-    var operators = List.of("Is");
-    var properties = List.of("You", "Win", "Stop", "Push", "Melt", "Hot", "Defeat", "Sink");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var operators = List.of("IS", "ON", "HAS", "AND");
+    var properties = List.of("YOU", "WIN", "STOP", "PUSH", "MELT", "HOT", "DEFEAT", "SINK");
 
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
-    if(!operators.contains(operator)) throw new IllegalArgumentException("Operator is not 'Is'");
+    if(!operators.contains(operator)) throw new IllegalArgumentException("Invalid name : " + operator);
     if(!properties.contains(property)) throw new IllegalArgumentException("Invalid property : " + property);
 
     return isValidRuleInDirectionHorizontalOrVertical(board, name, operator, property);
@@ -66,5 +66,4 @@ public class Rule {
     }
     return false;
   }
-
 }

@@ -1,7 +1,16 @@
 package fr.esiee.babaisyou.controler;
 
+import com.github.forax.zen.Application;
 import fr.esiee.babaisyou.model.GameBoard;
+import fr.esiee.babaisyou.model.Name;
+import fr.esiee.babaisyou.model.Operator;
+import fr.esiee.babaisyou.model.Property;
+import fr.esiee.babaisyou.view.Graphic;
+import fr.esiee.babaisyou.view.ImagesLoader;
 
+import java.awt.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -47,4 +56,5 @@ public class Main {
 
         System.out.println("Victory !");
     }
+
 }

@@ -5,7 +5,6 @@ import java.util.Objects;
 public record Name(int x, int y, String name) implements Square {
   public Name {
     Objects.requireNonNull(name);
-    Objects.requireNonNull(name);
     if (!name.equals("BABA") && !name.equals("FLAG") && !name.equals("WALL") && !name.equals("WATER") && !name.equals("SKULL") && !name.equals("LAVA") && !name.equals("ROCK") && !name.equals("FLOWER")) {
       throw new IllegalArgumentException("Invalid name: " + name);
     }
@@ -19,7 +18,6 @@ public record Name(int x, int y, String name) implements Square {
 
   @Override
   public int getY() { return y; }
-
 
   @Override
   public boolean isName() { return true; }

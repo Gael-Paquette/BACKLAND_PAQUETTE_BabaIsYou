@@ -11,7 +11,9 @@ public record Property(int x, int y, String name) implements Square {
     if (x < 0 || y < 0) {
       throw new IllegalArgumentException("X and Y coordinates must be greater than or equal to 0");
     }
-  }@Override
+  }
+  
+  @Override
   public int getX() { return x; }
 
   @Override

@@ -1,6 +1,6 @@
 package fr.esiee.babaisyou.model;
 
-public sealed interface Square permits Name, Object, Operator, Property {
+public sealed interface Square permits Name, Operator, Property, Object {
   int getX();
 
   int getY();
@@ -20,5 +20,4 @@ public sealed interface Square permits Name, Object, Operator, Property {
   String representation();
 
   String name();
-
 }
