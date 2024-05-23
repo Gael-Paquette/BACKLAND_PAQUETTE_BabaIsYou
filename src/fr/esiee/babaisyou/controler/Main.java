@@ -1,4 +1,6 @@
-package fr.esiee.babaisyou;
+package fr.esiee.babaisyou.controler;
+
+import fr.esiee.babaisyou.model.GameBoard;
 
 import java.util.Scanner;
 

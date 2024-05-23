@@ -1,4 +1,4 @@
-package fr.esiee.babaisyou;
+package fr.esiee.babaisyou.model;
 
 import java.util.List;
 import java.util.Objects;
