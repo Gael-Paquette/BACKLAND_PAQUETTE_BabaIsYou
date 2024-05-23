@@ -1,12 +1,23 @@
 package fr.esiee.babaisyou;
 
-import java.util.Objects;
+public sealed interface Square permits Name, Operator, Property, Object {
+  
+  int x();
 
-public record Square(int x, int y, Element element) {
-  public Square {
-    Objects.requireNonNull(element);
-    if(x < 0 || y < 0)
-      throw new IllegalArgumentException("x and y are negative");
-  }
+  int y();
+
+  String name();
+
+  boolean isName();
+
+  boolean isOperator();
+
+  boolean isProperty();
+
+  boolean isObject();
+
+  boolean isEmpty();
+
+  String representation();
 
 }

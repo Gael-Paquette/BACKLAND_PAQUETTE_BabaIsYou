@@ -1,82 +1,70 @@
 package fr.esiee.babaisyou;
 
-import javax.management.modelmbean.InvalidTargetObjectTypeException;
+import java.util.List;
 import java.util.Objects;
 
 public class Rule {
-  // Vérifie si une combinaison spécifique de mots constitue une règle valide selon les conditions données dans le jeu Baba Is You
-  private static boolean isValidRuleCombination(Element leftOperand, Element operator, Element rightOperand) {
+
+  public boolean isValidRule(GameBoard board, String name, String operator, String property) {
+    Objects.requireNonNull(board);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operator);
+    Objects.requireNonNull(property);
+
+    var names = List.of("Baba", "Flag", "Wall", "Water", "Skull", "Lava", "Rock");
+    var operators = List.of("Is");
+    var properties = List.of("You", "Win", "Stop", "Push", "Melt", "Hot", "Defeat", "Sink");
+
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+    if(!operators.contains(operator)) throw new IllegalArgumentException("Operator is not 'Is'");
+    if(!properties.contains(property)) throw new IllegalArgumentException("Invalid property : " + property);
+
+    return isValidRuleInDirectionHorizontalOrVertical(board, name, operator, property);
+  }
+
+  public boolean isValidRuleCombination(Square leftOperand, Square operator, Square rightOperand) {
     Objects.requireNonNull(leftOperand);
     Objects.requireNonNull(operator);
     Objects.requireNonNull(rightOperand);
-    if (!(leftOperand.isName()) || !(operator.isOperator()) || !(rightOperand.isProperty())) {
-      return false;
-    }
-
-    return (leftOperand.representation().equals(operator.representation()) || leftOperand.representation().equals(rightOperand.representation()));
+    return (leftOperand.isName() && operator.isOperator() && rightOperand.isProperty());
   }
 
-  private static boolean isValidHorizontalRule(GameBoard board, int x, int y) {
+  public boolean isMatchingRule(GameBoard board, int x, int y, String name, String operator, String property, String direction) {
     Objects.requireNonNull(board);
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operator);
+    Objects.requireNonNull(property);
+    Objects.requireNonNull(direction);
+
+    Square s, next1, next2;
     if (x < 0 || x > board.getRows() || y < 0 || y > board.getCols()) {
       throw new IllegalArgumentException("x or y out of bounds");
     }
-
-    return isValidRuleCombination(board.getElement(x, y), board.getElement(x + 1, y), board.getElement(x + 2, y));
+    s = board.getSquare(x, y);
+    next1 = board.nextSquare(s.x(), s.y(), direction);
+    next2 = board.nextSquare(next1.x(), next1.y(), direction);
+    return s.name().equals(name) && next1.name().equals(operator) && next2.name().equals(property);
   }
 
-  private static boolean isValidVerticalRule(GameBoard board, int x, int y) {
+  public boolean isValidRuleInDirectionHorizontalOrVertical(GameBoard board, String name, String operator, String property) {
     Objects.requireNonNull(board);
-    if (x < 0 || x > board.getRows() || y < 0 || y > board.getCols()) {
-      throw new IllegalArgumentException("x or y out of bounds");
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(operator);
+    Objects.requireNonNull(property);
+    int i, j;
+    for (i = 0; i < board.getRows(); i++) {
+      for (j = 0; j < board.getCols() - 2; j++) {
+        if(isMatchingRule(board, i, j, name, operator, property, "right"))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "right"), board.nextSquare(i, j+1, "right"));
+      }
     }
-
-    return isValidRuleCombination(board.getElement(x, y), board.getElement(x, y + 1), board.getElement(x, y + 2));
-  }
-
-  private static boolean isPlayerPresent(GameBoard board) {
-    Objects.requireNonNull(board);
-    for (var i = 0; i < board.getRows(); i++) {
-      for (var j = 0; j< board.getCols(); j++) {
-        if (board.getElement(i, j).isProperty() && board.getElement(i, j).representation().equals("You")) {
-          return true;
-        }
+    for (i = 0; i < board.getRows() - 2; i++) {
+      for (j = 0; j < board.getCols(); j++) {
+        if (isMatchingRule(board, i, j, name, operator, property, "down"))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "down"), board.nextSquare(i + 1, j, "down"));
       }
     }
     return false;
   }
 
-  private static boolean isWinConditionPresent(GameBoard board) {
-    Objects.requireNonNull(board);
-    for (var i = 0; i < board.getRows(); i++) {
-      for (var j = 0; j< board.getCols(); j++) {
-        if (board.getElement(i, j).isProperty() && board.getElement(i, j).representation().equals("Win")) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  // Vérifie si une règle est valide sur le plateaude jeu fourni. Les règles sont vérifiées horizontalement et verticalement.
-  public boolean isValidRule(GameBoard board) {
-    Objects.requireNonNull(board);
-    // Check all horizontal rules
-    for (var i = 0; i < board.getRows(); i++) {
-      for (var j = 0; j < board.getCols() - 2; j++) {
-        if (isValidHorizontalRule(board, i, j)) {
-          return true;
-        }
-      }
-    }
-    // Check all vertical rules
-    for (var i = 0; i < board.getRows() - 2; i++) {
-      for (var j = 0; j < board.getCols(); j++) {
-        if (isValidVerticalRule(board, i, j)) {
-          return true;
-        }
-      }
-    }
-    return isPlayerPresent(board) && isWinConditionPresent(board);
-  }
 }
