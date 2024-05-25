@@ -12,17 +12,23 @@ public class GameBoard {
             throw new IllegalArgumentException();
         this.rows = rows;
         this.cols = cols;
-        this.board = new HashMap<>();
+        this.board = new LinkedHashMap<>();
         initializeBoard();
     }
 
     private void initializeBoard() {
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                board.put(String.valueOf(i) + String.valueOf(j), new ArrayList<>());
-                board.get(String.valueOf(i) + String.valueOf(j)).add(new Object(i, j, "NULL"));
+                board.put(key(i, j), new ArrayList<>());
+                board.get(key(i, j)).add(new Object(i, j, "NULL"));
             }
         }
+    }
+
+    private String key(int row, int col) {
+        if(inTheBoard(row, col))
+            return "x : " + row + ", y : " + col;
+        throw new IllegalArgumentException("Coordinates out of bounds ! (x : " + row + ", y : " + col + ")");
     }
 
     public int getRows() { return this.rows; }
@@ -31,8 +37,21 @@ public class GameBoard {
 
     public Square getSquare(int x, int y) {
         if(inTheBoard(x, y))
-            return this.board.get(String.valueOf(x) + String.valueOf(y)).getFirst();
+            return this.board.get(key(x, y)).getFirst();
         return null;
+    }
+
+    public void addSquare(int x, int y, Square square) {
+        if(inTheBoard(x, y))
+            board.get(key(x, y)).add(square);
+    }
+
+    public void updateSquare(int row, int col, Square square) {
+        Objects.requireNonNull(square);
+        if (inTheBoard(row, col)) {
+            this.board.get(key(row, col)).clear();
+            this.board.get(key(row, col)).add(square);
+        }
     }
 
     public boolean inTheBoard(int x, int y) { return (x >= 0 && x < rows) && (y >= 0 && y < cols); }
@@ -53,19 +72,11 @@ public class GameBoard {
             throw new IllegalArgumentException("Invalid direction " + direction);
     }
 
-    public void updateSquare(int row, int col, Square square) {
-        Objects.requireNonNull(square);
-        if (inTheBoard(row, col)) {
-            this.board.get(String.valueOf(row) + String.valueOf(col)).clear();
-            this.board.get(String.valueOf(row) + String.valueOf(col)).add(square);
-        }
-    }
-
     public Square getSquarePlayer() {
         ArrayList<Square> squares;
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                squares = board.get(String.valueOf(i) + String.valueOf(j));
+                squares = board.get(key(i, j));
                 for(Square s : squares) {
                     if(s.representation().equals("X"))
                         return s;
@@ -79,7 +90,7 @@ public class GameBoard {
         ArrayList<Square> squares;
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                squares = board.get(String.valueOf(i) + String.valueOf(j));
+                squares = board.get(key(i, j));
                 for(Square s : squares) {
                     if(s.representation().equals("F"))
                         return s;

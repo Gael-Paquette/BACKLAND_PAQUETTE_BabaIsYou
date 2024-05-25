@@ -6,7 +6,6 @@ import fr.esiee.babaisyou.model.Object;
 import fr.esiee.babaisyou.model.Name;
 import fr.esiee.babaisyou.model.Operator;
 import fr.esiee.babaisyou.model.Property;
-import fr.esiee.babaisyou.model.Rule;
 import fr.esiee.babaisyou.view.Graphic;
 import fr.esiee.babaisyou.view.ImagesLoader;
 
@@ -19,9 +18,8 @@ public class Main {
     public static void main(String[] args) {
         int direction;
         Scanner sc = new Scanner(System.in);
-        Rule rule = new Rule();
 
-        GameBoard gameBoard = new GameBoard(10,10);
+        GameBoard board = new GameBoard(10,10);
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
                 List.of("IS", "ON", "HAS", "AND"),
@@ -31,18 +29,18 @@ public class Main {
         // System.out.println(imagesLoader.getImagesObject());
         // System.out.println(imagesLoader.getImagesText());
 
-        gameBoard.updateSquare(1, 1, new Name(1, 1, "BABA"));
-        gameBoard.updateSquare(1, 2, new Operator(1, 2, "IS"));
-        gameBoard.updateSquare(1, 3, new Property(1, 3, "YOU"));
-        gameBoard.updateSquare(0,0, new Object(0, 0, "BABA"));
-        gameBoard.updateSquare(0,9, new Object(0, 9, "FLAG"));
-        gameBoard.updateSquare(5, 3, new Object(5, 3, "ROCK"));
-        gameBoard.updateSquare(5, 4, new Object(5, 4, "ROCK"));
-        gameBoard.updateSquare(5, 5, new Object(5, 5, "ROCK"));
-        gameBoard.updateSquare(8, 3, new Name(8, 3, "ROCK"));
-        gameBoard.updateSquare(8, 4, new Operator(8, 4, "IS"));
-        gameBoard.updateSquare(8, 5, new Property(8, 5, "PUSH"));
-        gameBoard.displayBoard();
+        board.updateSquare(1, 1, new Name(1, 1, "BABA"));
+        board.updateSquare(1, 2, new Operator(1, 2, "IS"));
+        board.updateSquare(1, 3, new Property(1, 3, "YOU"));
+        board.updateSquare(0,0, new Object(0, 0, "BABA"));
+        board.updateSquare(0,9, new Object(0, 9, "FLAG"));
+        board.updateSquare(5, 3, new Object(5, 3, "ROCK"));
+        board.updateSquare(5, 4, new Object(5, 4, "ROCK"));
+        board.updateSquare(5, 5, new Object(5, 5, "ROCK"));
+        board.updateSquare(8, 3, new Name(8, 3, "ROCK"));
+        board.updateSquare(8, 4, new Operator(8, 4, "IS"));
+        board.updateSquare(8, 5, new Property(8, 5, "PUSH"));
+        board.displayBoard();
 
         /*
         Application.run(Color.BLACK, context -> {
@@ -63,30 +61,30 @@ public class Main {
 
             switch(direction) {
                 case 1:
-                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "LEFT"))
-                        gameBoard.push("LEFT");
-                    gameBoard.movePlayer("LEFT");
+                    if(board.facingABlock(board.getSquarePlayer(), "LEFT"))
+                        board.push("LEFT");
+                    board.movePlayer("LEFT");
                     break;
                 case 2:
-                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "RIGHT"))
-                        gameBoard.push("RIGHT");
-                    gameBoard.movePlayer("RIGHT");
+                    if(board.facingABlock(board.getSquarePlayer(), "RIGHT"))
+                        board.push("RIGHT");
+                    board.movePlayer("RIGHT");
                     break;
                 case 3:
-                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "UP"))
-                        gameBoard.push("UP");
-                    gameBoard.movePlayer("UP");
+                    if(board.facingABlock(board.getSquarePlayer(), "UP"))
+                        board.push("UP");
+                    board.movePlayer("UP");
                     break;
                 case 4:
-                    if(gameBoard.facingABlock(gameBoard.getSquarePlayer(), "DOWN"))
-                        gameBoard.push("DOWN");
-                    gameBoard.movePlayer("DOWN");
+                    if(board.facingABlock(board.getSquarePlayer(), "DOWN"))
+                        board.push("DOWN");
+                    board.movePlayer("DOWN");
                     break;
             }
-            gameBoard.displayBoard();
-        } while(gameBoard.getSquareFlag() != null && gameBoard.playerIsPresent());
+            board.displayBoard();
+        } while(board.getSquareFlag() != null && board.playerIsPresent());
 
-        if(!gameBoard.playerIsPresent())
+        if(!board.playerIsPresent())
             System.out.println("Defeat !");
         else
             System.out.println("Victory !");
