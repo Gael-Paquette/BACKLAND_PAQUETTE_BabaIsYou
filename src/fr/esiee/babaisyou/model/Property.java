@@ -20,13 +20,13 @@ public record Property(int x, int y, String name) implements Square {
   public int getY() { return y; }
 
   @Override
-  public boolean isName() { return true; }
+  public boolean isName() { return false; }
 
   @Override
   public boolean isOperator() { return false; }
 
   @Override
-  public boolean isProperty() { return false; }
+  public boolean isProperty() { return true; }
 
   @Override
   public boolean isObject() { return false; }

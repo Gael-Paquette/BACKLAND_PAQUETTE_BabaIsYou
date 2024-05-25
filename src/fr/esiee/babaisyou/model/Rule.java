@@ -54,16 +54,17 @@ public class Rule {
     int i, j;
     for (i = 0; i < board.getRows(); i++) {
       for (j = 0; j < board.getCols() - 2; j++) {
-        if(isMatchingRule(board, i, j, name, operator, property, "right"))
-          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "right"), board.nextSquare(i, j+1, "right"));
+        if(isMatchingRule(board, i, j, name, operator, property, "RIGHT"))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "RIGHT"), board.nextSquare(i, j+1, "RIGHT"));
       }
     }
     for (i = 0; i < board.getRows() - 2; i++) {
       for (j = 0; j < board.getCols(); j++) {
-        if (isMatchingRule(board, i, j, name, operator, property, "down"))
-          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "down"), board.nextSquare(i + 1, j, "down"));
+        if (isMatchingRule(board, i, j, name, operator, property, "DOWN"))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "DOWN"), board.nextSquare(i + 1, j, "DOWN"));
       }
     }
     return false;
   }
+
 }

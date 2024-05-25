@@ -1,34 +1,27 @@
 package fr.esiee.babaisyou.model;
 
-import java.awt.*;
-import java.util.Objects;
+import java.util.*;
 
 public class GameBoard {
     private final int rows;
     private final int cols;
-    private final Square[][] board;
+    private final Map<String, ArrayList<Square>> board;
 
     public GameBoard(int rows, int cols) {
         if(rows < 1 || cols < 1)
             throw new IllegalArgumentException();
         this.rows = rows;
         this.cols = cols;
-        this.board = new Square[rows][cols];
+        this.board = new HashMap<>();
         initializeBoard();
     }
 
     private void initializeBoard() {
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                board[i][j] = new Object(i, j, "NULL");
+                board.put(String.valueOf(i) + String.valueOf(j), new ArrayList<>());
+                board.get(String.valueOf(i) + String.valueOf(j)).add(new Object(i, j, "NULL"));
             }
-        }
-    }
-
-    public void updateSquare(int row, int col, Square square) {
-        Objects.requireNonNull(this.board[row][col]);
-        if (inTheBoard(row, col)) {
-            this.board[row][col] = square;
         }
     }
 
@@ -38,7 +31,7 @@ public class GameBoard {
 
     public Square getSquare(int x, int y) {
         if(inTheBoard(x, y))
-            return this.board[x][y];
+            return this.board.get(String.valueOf(x) + String.valueOf(y)).getFirst();
         return null;
     }
 
@@ -56,31 +49,41 @@ public class GameBoard {
 
     public void validDirection(String direction) {
         Objects.requireNonNull(direction);
-        if (!direction.equals("left") && !direction.equals("right") && !direction.equals("up") && !direction.equals("down"))
+        if (!direction.equals("LEFT") && !direction.equals("RIGHT") && !direction.equals("UP") && !direction.equals("DOWN"))
             throw new IllegalArgumentException("Invalid direction " + direction);
     }
 
-    public void setSquare(int x, int y, Square square) {
+    public void updateSquare(int row, int col, Square square) {
         Objects.requireNonNull(square);
-        if(inTheBoard(x, y)) {
-            this.board[x][y] = square;
+        if (inTheBoard(row, col)) {
+            this.board.get(String.valueOf(row) + String.valueOf(col)).clear();
+            this.board.get(String.valueOf(row) + String.valueOf(col)).add(square);
         }
     }
 
     public Square getSquarePlayer() {
+        ArrayList<Square> squares;
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                    return this.board[i][j];
+                squares = board.get(String.valueOf(i) + String.valueOf(j));
+                for(Square s : squares) {
+                    if(s.representation().equals("X"))
+                        return s;
+                }
             }
         }
         return null;
     }
 
     public Square getSquareFlag() {
+        ArrayList<Square> squares;
         for(int i = 0 ; i < this.rows ; i++) {
             for(int j = 0 ; j < this.cols ; j++) {
-                if(this.getSquare(i, j).representation().equals("F"))
-                    return this.board[i][j];
+                squares = board.get(String.valueOf(i) + String.valueOf(j));
+                for(Square s : squares) {
+                    if(s.representation().equals("F"))
+                        return s;
+                }
             }
         }
         return null;
@@ -121,6 +124,10 @@ public class GameBoard {
         Objects.requireNonNull(property);
         Rule rule = new Rule();
         return rule.isValidRule(this, name, operator, property);
+    }
+
+    public boolean playerIsPresent() {
+        return isRuleActive("BABA", "IS", "YOU");
     }
 
     public boolean canPushChain(int elements, String direction, String nameOfTheBlock) {
@@ -178,10 +185,10 @@ public class GameBoard {
         validDirection(direction);
         if(inTheBoard(x, y)) {
             return switch (direction) {
-                case "left" -> getSquare(x, y - 1);
-                case "right" -> getSquare(x, y + 1);
-                case "up" -> getSquare(x - 1, y);
-                case "down" -> getSquare(x + 1, y);
+                case "LEFT" -> getSquare(x, y - 1);
+                case "RIGHT" -> getSquare(x, y + 1);
+                case "UP" -> getSquare(x - 1, y);
+                case "DOWN" -> getSquare(x + 1, y);
                 default -> null;
             };
         }
@@ -193,10 +200,10 @@ public class GameBoard {
         validDirection(reverseDirection);
         if(inTheBoard(x, y)) {
             return switch (reverseDirection) {
-                case "left" -> getSquare(x, y + 1);
-                case "right" -> getSquare(x, y - 1);
-                case "up" -> getSquare(x + 1, y);
-                case "down" -> getSquare(x - 1, y);
+                case "LEFT" -> getSquare(x, y + 1);
+                case "RIGHT" -> getSquare(x, y - 1);
+                case "UP" -> getSquare(x + 1, y);
+                case "DOWN" -> getSquare(x - 1, y);
                 default -> null;
             };
         }
@@ -210,8 +217,8 @@ public class GameBoard {
         Square s  = nextSquare(player.getX(), player.getY(), direction);
         if(!notInTheBoard(s)) {
             if(s.isEmpty() || s.name().equals("FLAG")) {
-                setSquare(s.getX(), s.getY(), new Object(s.getX(), s.getY(), player.name()));
-                setSquare(player.getX(), player.getY(), new Object(player.getX(), player.getY(), "NULL"));
+                updateSquare(s.getX(), s.getY(), new Object(s.getX(), s.getY(), player.name()));
+                updateSquare(player.getX(), player.getY(), new Object(player.getX(), player.getY(), "NULL"));
             }
         }
     }
@@ -220,15 +227,15 @@ public class GameBoard {
         Objects.requireNonNull(from);
         Objects.requireNonNull(to);
         if (from.isObject())
-            setSquare(to.getX(), to.getY(), new Object(to.getX(), to.getY(), from.name()));
+            updateSquare(to.getX(), to.getY(), new Object(to.getX(), to.getY(), from.name()));
         else if (from.isName())
-            setSquare(to.getX(), to.getY(), new Name(to.getX(), to.getY(), from.name()));
+            updateSquare(to.getX(), to.getY(), new Name(to.getX(), to.getY(), from.name()));
         else if (from.isOperator())
-            setSquare(to.getX(), to.getY(), new Operator(to.getX(), to.getY(), from.name()));
+            updateSquare(to.getX(), to.getY(), new Operator(to.getX(), to.getY(), from.name()));
         else if(from.isProperty())
-            setSquare(to.getX(), to.getY(), new Property(to.getX(), to.getY(), from.name()));
+            updateSquare(to.getX(), to.getY(), new Property(to.getX(), to.getY(), from.name()));
 
-        setSquare(from.getX(), from.getY(), new Object(from.getX(), from.getY(), "NULL"));
+        updateSquare(from.getX(), from.getY(), new Object(from.getX(), from.getY(), "NULL"));
     }
 
     public void displayBoard() {
@@ -239,4 +246,5 @@ public class GameBoard {
             System.out.println();
         }
     }
+
 }
