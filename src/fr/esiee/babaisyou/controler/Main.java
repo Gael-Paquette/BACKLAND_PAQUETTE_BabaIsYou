@@ -107,7 +107,7 @@ public class Main {
                     break;
             }
             board.displayBoard();
-        } while(board.getSquareFlag() != null && board.playerIsPresent());
+        } while(!board.win() && board.playerIsPresent());
 
         if(!board.playerIsPresent())
             System.out.println("Defeat !");

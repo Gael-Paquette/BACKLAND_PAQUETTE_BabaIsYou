@@ -1,6 +1,7 @@
 package fr.esiee.babaisyou.model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameBoard {
     private final int rows;
@@ -17,10 +18,10 @@ public class GameBoard {
     }
 
     private void initializeBoard() {
-        for(int i = 0 ; i < this.rows ; i++) {
-            for(int j = 0 ; j < this.cols ; j++) {
-                board.put(key(i, j), new ArrayList<>());
-                board.get(key(i, j)).add(new Object(i, j, "NULL"));
+        for(int row = 0 ; row < this.rows ; row++) {
+            for(int col = 0 ; col < this.cols ; col++) {
+                board.put(key(row, col), new ArrayList<>());
+                board.get(key(row, col)).add(new Object(row, col, "NULL"));
             }
         }
     }
@@ -35,15 +36,21 @@ public class GameBoard {
 
     public int getCols() { return this.cols; }
 
-    public Square getSquare(int x, int y) {
-        if(inTheBoard(x, y))
-            return this.board.get(key(x, y)).getFirst();
+    public Square getSquare(int row, int col) {
+        if(inTheBoard(row, col))
+            return this.board.get(key(row, col)).getFirst();
         return null;
     }
 
-    public void addSquare(int x, int y, Square square) {
-        if(inTheBoard(x, y))
-            board.get(key(x, y)).add(square);
+    public ArrayList<Square> getObjectsOfTheSquare(int row, int col) {
+        if(inTheBoard(row, col))
+            return this.board.get(key(row, col));
+        return null;
+    }
+
+    public void addSquare(int row, int col, Square square) {
+        if(inTheBoard(row, col))
+            board.get(key(row, col)).add(square);
     }
 
     public void updateSquare(int row, int col, Square square) {
@@ -54,7 +61,15 @@ public class GameBoard {
         }
     }
 
-    public boolean inTheBoard(int x, int y) { return (x >= 0 && x < rows) && (y >= 0 && y < cols); }
+    public void updateSquareAll(int row, int col, List<Square> squares) {
+        Objects.requireNonNull(squares);
+        if (inTheBoard(row, col)) {
+            this.board.get(key(row, col)).clear();
+            this.board.get(key(row, col)).addAll(squares);
+        }
+    }
+
+    public boolean inTheBoard(int row, int col) { return (row >= 0 && row < rows) && (col >= 0 && col < cols); }
 
     public boolean notInTheBoard(Square s) { return s == null; }
 
@@ -74,9 +89,9 @@ public class GameBoard {
 
     public Square getSquarePlayer() {
         ArrayList<Square> squares;
-        for(int i = 0 ; i < this.rows ; i++) {
-            for(int j = 0 ; j < this.cols ; j++) {
-                squares = board.get(key(i, j));
+        for(int row = 0 ; row < this.rows ; row++) {
+            for(int col = 0 ; col < this.cols ; col++) {
+                squares = board.get(key(row, col));
                 for(Square s : squares) {
                     if(s.representation().equals("X"))
                         return s;
@@ -88,9 +103,9 @@ public class GameBoard {
 
     public Square getSquareFlag() {
         ArrayList<Square> squares;
-        for(int i = 0 ; i < this.rows ; i++) {
-            for(int j = 0 ; j < this.cols ; j++) {
-                squares = board.get(key(i, j));
+        for(int row = 0 ; row < this.rows ; row++) {
+            for(int col = 0 ; col < this.cols ; col++) {
+                squares = board.get(key(row, col));
                 for(Square s : squares) {
                     if(s.representation().equals("⚑"))
                         return s;
@@ -102,30 +117,27 @@ public class GameBoard {
 
     public int countElementToPush(String direction) {
         Objects.requireNonNull(direction);
-        int count = 0;
         Square player = getSquarePlayer();
         Square block;
+        int count = 0;
         if (!notInTheBoard(player)) {
             block = nextSquare(player.getX(), player.getY(), direction);
             validDirection(direction);
-            while (block != null && ( (block.isObject() && !block.isEmpty()) || block.isName() || block.isOperator() || block.isProperty() )) {
+            while (block != null && block.isPushable(this)) {
                 count++;
                 block = nextSquare(block.getX(), block.getY(), direction);
             }
         }
         return count;
     }
-  
+
     public boolean facingABlock(Square player, String direction) {
         Objects.requireNonNull(player);
         Objects.requireNonNull(direction);
         if (notInTheBoard(player)) return false;
         validDirection(direction);
-
         Square next = nextSquare(player.getX(), player.getY(), direction);
-        if (!notInTheBoard(next))
-            return (next.isObject() && !next.name().equals("NULL")) || (next.isName()) || (next.isOperator()) || (next.isProperty());
-
+        if (!notInTheBoard(next)) return (next.isObject() && !next.name().equals("NULL")) || (next.isName()) || (next.isOperator()) || (next.isProperty());
         return false;
     }
 
@@ -142,7 +154,8 @@ public class GameBoard {
     }
 
     public boolean win() {
-        return isRuleActive("FLAG", "IS", "WIN");
+        return isRuleActive("FLAG", "IS", "WIN")
+                && getSquarePlayer().getX() == getSquareFlag().getX() && getSquarePlayer().getY() == getSquareFlag().getY();
     }
 
     public boolean canPushChain(int elements, String direction) {
@@ -160,7 +173,7 @@ public class GameBoard {
         Objects.requireNonNull(direction);
         validDirection(direction);
         int countElementToPush, i;
-        Square block, current, currentNext, playerNext, player = getSquarePlayer();
+        Square block, current, currentNext, player = getSquarePlayer();
         if (notInTheBoard(player)) return;
         block = nextSquare(player.getX(), player.getY(), direction);
         countElementToPush = countElementToPush(direction);
@@ -209,15 +222,25 @@ public class GameBoard {
         throw new IllegalArgumentException();
     }
 
+    /* THE CROSSING IS MANAGED HERE TEMPORARILY */
     public void movePlayer(String direction) {
         Objects.requireNonNull(direction);
         validDirection(direction);
+        List<Square> squares;
         Square player = getSquarePlayer();
-        Square s  = nextSquare(player.getX(), player.getY(), direction);
-        if(!notInTheBoard(s)) {
-            if(s.isEmpty() || (s.representation().equals("⚑") && win())) {
-                updateSquare(s.getX(), s.getY(), new Object(s.getX(), s.getY(), player.name()));
-                updateSquare(player.getX(), player.getY(), new Object(player.getX(), player.getY(), "NULL"));
+        Square nextSquare = nextSquare(player.getX(), player.getY(), direction);
+        squares = getObjectsOfTheSquare(player.getX(), player.getY());
+        squares = squares.stream().filter(square -> !square.representation().equals("X")).collect(Collectors.toList());
+        if (!notInTheBoard(nextSquare)) {
+            if (nextSquare.isEmpty() || nextSquare.isTraversable(this)) {
+                if (nextSquare.isEmpty())
+                    updateSquare(nextSquare.getX(), nextSquare.getY(), new Object(nextSquare.getX(), nextSquare.getY(), player.name()));
+                else
+                    addSquare(nextSquare.getX(), nextSquare.getY(), new Object(nextSquare.getX(), nextSquare.getY(), player.name()));
+                if (squares.isEmpty())
+                    updateSquare(player.getX(), player.getY(), new Object(player.getX(), player.getY(), "NULL"));
+                else
+                    updateSquareAll(player.getX(), player.getY(), squares);
             }
         }
     }
@@ -233,17 +256,19 @@ public class GameBoard {
             updateSquare(to.getX(), to.getY(), new Operator(to.getX(), to.getY(), from.name()));
         else if(from.isProperty())
             updateSquare(to.getX(), to.getY(), new Property(to.getX(), to.getY(), from.name()));
-
         updateSquare(from.getX(), from.getY(), new Object(from.getX(), from.getY(), "NULL"));
     }
 
     public void displayBoard() {
-        for (int i = 0; i < this.rows; i++) {
-            for (int j = 0; j < this.cols; j++) {
-                System.out.print("[" + getSquare(i, j).representation() + "]");
+        ArrayList<Square> squares;
+        String representations;
+        for (int row = 0; row < this.rows; row++) {
+            for (int col = 0; col < this.cols; col++) {
+                squares = board.get(key(row, col));
+                representations = squares.stream().map(Square::representation).collect(Collectors.joining());
+                System.out.print("[" + representations + "]");
             }
             System.out.println();
         }
     }
-
 }

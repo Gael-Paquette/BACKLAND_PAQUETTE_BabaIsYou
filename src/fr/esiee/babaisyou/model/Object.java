@@ -38,6 +38,9 @@ public record Object(int x, int y, String name) implements Square {
   public boolean isPushable(GameBoard board) {
     Rule rule = new Rule();
     switch (this.name) {
+      case "NULL" -> {
+        return false;
+      }
       case "ROCK" -> {
         return rule.isValidRule(board, "ROCK", "IS", "PUSH");
       }
@@ -54,7 +57,10 @@ public record Object(int x, int y, String name) implements Square {
   @Override
   public boolean isTraversable(GameBoard board) {
     Rule rule = new Rule();
-    return rule.hasNoRules(board, this.name());
+    if(isEmpty())
+      return true;
+    else
+      return rule.hasNoRules(board, this.name());
   }
 
   @Override
