@@ -44,11 +44,9 @@ public record Object(int x, int y, String name) implements Square {
       case "WALL" -> {
         return rule.isValidRule(board, "WALL", "IS", "PUSH");
       }
-      /*
       case "FLAG" -> {
         return rule.isValidRule(board, "FLAG", "IS", "PUSH");
       }
-      */
     }
     return false;
   }

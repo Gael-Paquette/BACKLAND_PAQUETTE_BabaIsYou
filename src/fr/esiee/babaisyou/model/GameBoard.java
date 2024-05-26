@@ -174,9 +174,6 @@ public class GameBoard {
         current = block;
         for (i = 1; i <= countElementToPush; i++) {
             currentNext = nextSquare(current.getX(), current.getY(), direction);
-            playerNext = nextSquare(player.getX(), player.getY(), direction);
-            if(playerNext.representation().equals("⚑")) return;
-            // other conditions to be added provisionally
             moveBlock(current, currentNext);
             current = nextSquareReverse(current.getX(), current.getY(), direction);
         }
