@@ -35,10 +35,16 @@ public record Operator(int x, int y, String name) implements Square {
   public boolean isEmpty() { return false; }
 
   @Override
-  public boolean isPushable(GameBoard board) { return true; }
+  public boolean isPushable(GameBoard board) {
+    Objects.requireNonNull(board);
+    return true;
+  }
 
   @Override
-  public boolean isTraversable(GameBoard board) { return false; }
+  public boolean isTraversable(GameBoard board) {
+    Objects.requireNonNull(board);
+    return false;
+  }
 
   @Override
   public String representation() {
