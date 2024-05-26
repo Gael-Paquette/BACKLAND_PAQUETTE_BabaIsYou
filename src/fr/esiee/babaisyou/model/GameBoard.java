@@ -145,15 +145,12 @@ public class GameBoard {
         return isRuleActive("FLAG", "IS", "WIN");
     }
 
-    public boolean canPushChain(int elements, String direction, String nameOfTheBlock) {
+    public boolean canPushChain(int elements, String direction) {
         Objects.requireNonNull(direction);
-        Objects.requireNonNull(nameOfTheBlock);
         validDirection(direction);
         Square block = nextSquare(getSquarePlayer().getX(), getSquarePlayer().getY(), direction);
         for(int i = 1 ; i <= elements ; i++) {
-            if(block.representation().equals(nameOfTheBlock)) {
-                return false;
-            }
+            if(!block.isPushable(this)) return false;
             block = nextSquare(block.getX(), block.getY(), direction);
         }
         return true;
@@ -164,36 +161,22 @@ public class GameBoard {
         validDirection(direction);
         int countElementToPush, i;
         Square block, current, currentNext, playerNext, player = getSquarePlayer();
-
         if (notInTheBoard(player)) return;
         block = nextSquare(player.getX(), player.getY(), direction);
-
         countElementToPush = countElementToPush(direction);
         if (countElementToPush < 1) return;
-
         for (i = 1; i <= countElementToPush-1; i++) {
             block = nextSquare(block.getX(), block.getY(), direction);
             if (notInTheBoard(block)) return;
         }
-
         if(!canMove(block, direction)) return;
-
+        if(!canPushChain(countElementToPush, direction)) return;
         current = block;
         for (i = 1; i <= countElementToPush; i++) {
             currentNext = nextSquare(current.getX(), current.getY(), direction);
             playerNext = nextSquare(player.getX(), player.getY(), direction);
-            if(playerNext.representation().equals("*") && (!isRuleActive("ROCK", "IS", "PUSH")))
-                return;
-            if(playerNext.representation().equals("■") && (isRuleActive("WALL", "IS", "STOP")))
-                return;
-            if(playerNext.representation().equals("⚑"))
-                return;
-            if( (playerNext.isName() || playerNext.isOperator() || playerNext.isProperty()) && (!isRuleActive("ROCK", "IS", "PUSH"))
-                && !canPushChain(countElementToPush, direction, "*"))
-                return;
-
-            // AUTRES CONDTIONS A INDIQUER PAR LA SUITE (TROUVER UNE AUTRE SOLUTION POUR EVITER DE SURCHARGER LA METHODE)
-
+            if(playerNext.representation().equals("⚑")) return;
+            // other conditions to be added provisionally
             moveBlock(current, currentNext);
             current = nextSquareReverse(current.getX(), current.getY(), direction);
         }

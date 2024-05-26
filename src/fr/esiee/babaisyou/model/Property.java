@@ -35,7 +35,10 @@ public record Property(int x, int y, String name) implements Square {
   public boolean isEmpty() { return false; }
 
   @Override
-  public boolean isPushable() { return false; }
+  public boolean isPushable(GameBoard board) { return true; }
+
+  @Override
+  public boolean isTraversable(GameBoard board) { return false; }
 
   @Override
   public String representation() {

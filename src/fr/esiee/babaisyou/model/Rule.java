@@ -67,4 +67,11 @@ public class Rule {
     return false;
   }
 
+  public boolean hasNoRules(GameBoard board, String name) {
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+
+    return !isValidRule(board, name, "IS", "WIN") && !isValidRule(board, name, "IS", "PUSH") && !isValidRule(board, name, "IS", "STOP");
+  }
+
 }

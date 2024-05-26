@@ -15,7 +15,9 @@ public sealed interface Square permits Name, Operator, Property, Object {
 
   boolean isEmpty();
 
-  boolean isPushable();
+  boolean isPushable(GameBoard board);
+
+  boolean isTraversable(GameBoard board);
 
   String representation();
 
