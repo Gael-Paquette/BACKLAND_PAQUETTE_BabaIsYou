@@ -41,7 +41,7 @@ public record Object(int x, int y, String name) implements Square {
   public String representation() {
     return switch (name) {
       case "BABA" -> "X";
-      case "FLAG" -> "F";
+      case "FLAG" -> "⚑";
       case "WALL" -> "■";
       case "WATER" -> "~";
       case "SKULL" -> "\\uD83D\\uDC80";

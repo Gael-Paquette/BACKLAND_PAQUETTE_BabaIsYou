@@ -92,7 +92,7 @@ public class GameBoard {
             for(int j = 0 ; j < this.cols ; j++) {
                 squares = board.get(key(i, j));
                 for(Square s : squares) {
-                    if(s.representation().equals("F"))
+                    if(s.representation().equals("⚑"))
                         return s;
                 }
             }
@@ -141,7 +141,7 @@ public class GameBoard {
         return isRuleActive("BABA", "IS", "YOU");
     }
 
-    public boolean flagIsWin() {
+    public boolean win() {
         return isRuleActive("FLAG", "IS", "WIN");
     }
 
@@ -183,6 +183,10 @@ public class GameBoard {
             currentNext = nextSquare(current.getX(), current.getY(), direction);
             playerNext = nextSquare(player.getX(), player.getY(), direction);
             if(playerNext.representation().equals("*") && (!isRuleActive("ROCK", "IS", "PUSH")))
+                return;
+            if(playerNext.representation().equals("■") && (isRuleActive("WALL", "IS", "STOP")))
+                return;
+            if(playerNext.representation().equals("⚑"))
                 return;
             if( (playerNext.isName() || playerNext.isOperator() || playerNext.isProperty()) && (!isRuleActive("ROCK", "IS", "PUSH"))
                 && !canPushChain(countElementToPush, direction, "*"))
@@ -231,7 +235,7 @@ public class GameBoard {
         Square player = getSquarePlayer();
         Square s  = nextSquare(player.getX(), player.getY(), direction);
         if(!notInTheBoard(s)) {
-            if(s.isEmpty() || s.name().equals("FLAG")) {
+            if(s.isEmpty() || (s.representation().equals("⚑") && win())) {
                 updateSquare(s.getX(), s.getY(), new Object(s.getX(), s.getY(), player.name()));
                 updateSquare(player.getX(), player.getY(), new Object(player.getX(), player.getY(), "NULL"));
             }
