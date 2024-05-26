@@ -19,7 +19,7 @@ public class Main {
         int direction;
         Scanner sc = new Scanner(System.in);
 
-        GameBoard board = new GameBoard(10,10);
+        GameBoard board = new GameBoard(13,11);
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
                 List.of("IS", "ON", "HAS", "AND"),
@@ -32,14 +32,39 @@ public class Main {
         board.updateSquare(1, 1, new Name(1, 1, "BABA"));
         board.updateSquare(1, 2, new Operator(1, 2, "IS"));
         board.updateSquare(1, 3, new Property(1, 3, "YOU"));
-        board.updateSquare(0,0, new Object(0, 0, "BABA"));
-        board.updateSquare(0,9, new Object(0, 9, "FLAG"));
-        board.updateSquare(5, 3, new Object(5, 3, "ROCK"));
-        board.updateSquare(5, 4, new Object(5, 4, "ROCK"));
+        board.updateSquare(1, 7, new Name(1, 7, "FLAG"));
+        board.updateSquare(1, 8, new Operator(1, 8, "IS"));
+        board.updateSquare(1, 9, new Property(1, 9, "WIN"));
+        board.updateSquare(7, 1, new Name(7, 1, "WALL"));
+        board.updateSquare(7, 2, new Operator(7, 2, "IS"));
+        board.updateSquare(7, 3, new Property(7, 3, "STOP"));
+        board.updateSquare(7, 7, new Name(7, 7, "ROCK"));
+        board.updateSquare(7, 8, new Operator(7, 8, "IS"));
+        board.updateSquare(7, 9, new Property(7, 9, "PUSH"));
+        board.updateSquare(5,1, new Object(5, 1, "BABA"));
+        board.updateSquare(5,9, new Object(5, 9, "FLAG"));
         board.updateSquare(5, 5, new Object(5, 5, "ROCK"));
-        board.updateSquare(8, 3, new Name(8, 3, "ROCK"));
-        board.updateSquare(8, 4, new Operator(8, 4, "IS"));
-        board.updateSquare(8, 5, new Property(8, 5, "PUSH"));
+        board.updateSquare(6, 5, new Object(6, 5, "ROCK"));
+        board.updateSquare(7, 5, new Object(7, 5, "ROCK"));
+        board.updateSquare(3, 1, new Object(3, 1, "WALL"));
+        board.updateSquare(3, 2, new Object(3, 2, "WALL"));
+        board.updateSquare(3, 3, new Object(3, 3, "WALL"));
+        board.updateSquare(3, 4, new Object(3, 4, "WALL"));
+        board.updateSquare(3, 5, new Object(3, 5, "WALL"));
+        board.updateSquare(3, 6, new Object(3, 6, "WALL"));
+        board.updateSquare(3, 7, new Object(3, 7, "WALL"));
+        board.updateSquare(3, 8, new Object(3, 8, "WALL"));
+        board.updateSquare(3, 9, new Object(3, 9, "WALL"));
+        board.updateSquare(9, 1, new Object(9, 1, "WALL"));
+        board.updateSquare(9, 2, new Object(9, 2, "WALL"));
+        board.updateSquare(9, 3, new Object(9, 3, "WALL"));
+        board.updateSquare(9, 4, new Object(9, 4, "WALL"));
+        board.updateSquare(9, 5, new Object(9, 5, "WALL"));
+        board.updateSquare(9, 6, new Object(9, 6, "WALL"));
+        board.updateSquare(9, 7, new Object(9, 7, "WALL"));
+        board.updateSquare(9, 8, new Object(9, 8, "WALL"));
+        board.updateSquare(9, 9, new Object(9, 9, "WALL"));
+
         board.displayBoard();
 
         /*

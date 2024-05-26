@@ -41,7 +41,7 @@ public record Property(int x, int y, String name) implements Square {
   public String representation() {
     return switch (name) {
       case "YOU" -> "Y";
-      case "WIN" -> "F";
+      case "WIN" -> "W";
       case "STOP" -> "S";
       case "PUSH" -> "P";
       case "MELT" -> "M";

@@ -141,6 +141,10 @@ public class GameBoard {
         return isRuleActive("BABA", "IS", "YOU");
     }
 
+    public boolean flagIsWin() {
+        return isRuleActive("FLAG", "IS", "WIN");
+    }
+
     public boolean canPushChain(int elements, String direction, String nameOfTheBlock) {
         Objects.requireNonNull(direction);
         Objects.requireNonNull(nameOfTheBlock);
