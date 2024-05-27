@@ -9,16 +9,18 @@ import fr.esiee.babaisyou.view.Graphic;
 import fr.esiee.babaisyou.view.ImagesLoader;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int direction;
         Scanner sc = new Scanner(System.in);
 
-        GameBoard gameBoard = new GameBoard(10,10);
+        GameBoard gameBoard = new GameBoard(Paths.get("levels/level1.txt"));
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
                 List.of("IS", "ON", "HAS", "AND"),
@@ -32,14 +34,13 @@ public class Main {
         gameBoard.updateSquare(1, 3, new Property(1, 3, "YOU"));
         gameBoard.displayBoard();
 
-        /*
+
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
             Graphic.draw(context, gameBoard, imagesLoader, width, height);
         });
-        */
 
         do {
             System.out.println("Enter the direction : ");
