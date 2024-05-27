@@ -29,7 +29,7 @@ public class Rule {
     return (leftOperand.isName() && operator.isOperator() && rightOperand.isProperty());
   }
 
-  public boolean isMatchingRule(GameBoard board, int x, int y, String name, String operator, String property, String direction) {
+  public boolean isMatchingRule(GameBoard board, int row, int col, String name, String operator, String property, String direction) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
     Objects.requireNonNull(operator);
@@ -37,12 +37,12 @@ public class Rule {
     Objects.requireNonNull(direction);
 
     Square s, next1, next2;
-    if (x < 0 || x > board.getRows() || y < 0 || y > board.getCols()) {
-      throw new IllegalArgumentException("x or y out of bounds");
+    if (row < 0 || row > board.getRows() || col < 0 || col > board.getCols()) {
+      throw new IllegalArgumentException("row or col out of bounds");
     }
-    s = board.getSquare(x, y);
-    next1 = board.nextSquare(s.getX(), s.getY(), direction);
-    next2 = board.nextSquare(next1.getX(), next1.getY(), direction);
+    s = board.getSquare(row, col);
+    next1 = board.nextSquare(s.x(), s.y(), direction);
+    next2 = board.nextSquare(next1.x(), next1.y(), direction);
     return s.name().equals(name) && next1.name().equals(operator) && next2.name().equals(property);
   }
 

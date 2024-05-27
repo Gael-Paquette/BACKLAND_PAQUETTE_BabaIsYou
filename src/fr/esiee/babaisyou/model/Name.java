@@ -14,12 +14,6 @@ public record Name(int x, int y, String name) implements Square {
   }
 
   @Override
-  public int getX() { return x; }
-
-  @Override
-  public int getY() { return y; }
-
-  @Override
   public boolean isName() { return true; }
 
   @Override
