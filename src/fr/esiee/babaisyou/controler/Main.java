@@ -20,7 +20,7 @@ public class Main {
         int direction;
         Scanner sc = new Scanner(System.in);
 
-        GameBoard gameBoard = new GameBoard(Paths.get("levels/level1.txt"));
+        GameBoard gameBoard = new GameBoard(Paths.get("levels/level0.txt"));
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
                 List.of("IS", "ON", "HAS", "AND"),

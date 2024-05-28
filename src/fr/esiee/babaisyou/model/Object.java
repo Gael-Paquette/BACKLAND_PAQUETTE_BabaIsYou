@@ -47,6 +47,7 @@ public record Object(int x, int y, String name) implements Square {
       case "SKULL" -> "¤";
       case "LAVA" -> "§";
       case "ROCK" -> "*";
+      case "FLOWER" -> "#";
       default -> " ";
     };
   }
