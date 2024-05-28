@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,16 +13,16 @@ import java.util.stream.Collectors;
 public class GameBoard {
     private final int rows;
     private final int cols;
-    private final Map<String, ArrayList<Square>> board;
+    private final Map<String, List<Square>> board;
 
-    public GameBoard(Path path) throws IOException {
+    public GameBoard(int rows, int cols) throws IOException {
         if(rows < 1 || cols < 1)
             throw new IllegalArgumentException();
         this.rows = rows;
         this.cols = cols;
         this.board = new LinkedHashMap<>();
         initializeBoard();
-        Objects.requireNonNull(path);
+        /*Objects.requireNonNull(path);
         this.board = null;
         try (var reader = Files.newBufferedReader(path)) {
             String text;
@@ -35,9 +36,9 @@ public class GameBoard {
                 loadGameBoard(line, col);
                 col += 1;
             }
-        }
+        }*/
     }
-
+    /*
     private void loadGameBoard(String line, int col) {
         Objects.requireNonNull(line);
         if (col < 0 || col >= cols) {
@@ -84,7 +85,7 @@ public class GameBoard {
         } else {
             this.board[row][col] = new Property(row, col, item);
         }
-    }
+    }*/
 
     private void initializeBoard() {
         for(int row = 0 ; row < this.rows ; row++) {
@@ -140,12 +141,12 @@ public class GameBoard {
     }
 
     public Square getFirstSquarePushable(int row, int col) {
-        ArrayList <Square> squares = board.get(key(row,col));
+        List <Square> squares = board.get(key(row,col));
         return squares.stream().filter(s -> s.isPushable(this)).findFirst().get();
     }
 
     public boolean haveABlockPushable(int row, int col) {
-        ArrayList <Square> squares = board.get(key(row, col));
+        List <Square> squares = board.get(key(row, col));
         return squares.stream().anyMatch(s -> s.isPushable(this));
     }
 

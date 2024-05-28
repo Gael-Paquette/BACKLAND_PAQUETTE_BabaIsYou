@@ -43,10 +43,10 @@ public record Operator(int x, int y, String name) implements Square {
   @Override
   public String representation() {
     return switch (name) {
-      case "IS" -> "I";
-      case "ON" -> "O";
-      case "HAS" -> "H";
-      case "ROCK" -> "R";
+      case "IS" -> "IS";
+      case "ON" -> "ON";
+      case "HAS" -> "HAS";
+      case "ROCK" -> "ROCK";
       default -> throw new IllegalStateException("Unexpected value: " + name);
     };
   }

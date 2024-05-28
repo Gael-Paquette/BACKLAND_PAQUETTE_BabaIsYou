@@ -69,13 +69,13 @@ public class Main {
 
         board.displayBoard();
 
-
+        /*
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
             Graphic.draw(context, gameBoard, imagesLoader, width, height);
-        });
+        });*/
 
         do {
             System.out.println("Enter the direction : ");

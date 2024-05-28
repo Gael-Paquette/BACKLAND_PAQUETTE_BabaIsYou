@@ -43,14 +43,14 @@ public record Name(int x, int y, String name) implements Square {
   @Override
   public String representation() {
     return switch (name) {
-      case "BABA" -> "B";
-      case "FLAG" -> "F";
-      case "WALL" -> "W";
-      case "WATER" -> "W";
-      case "SKULL" -> "S";
-      case "LAVA" -> "L";
-      case "ROCK" -> "R";
-      case "FLOWER" -> "F";
+      case "BABA" -> "BABA";
+      case "FLAG" -> "FLAG";
+      case "WALL" -> "WALL";
+      case "WATER" -> "WATER";
+      case "SKULL" -> "SKULL";
+      case "LAVA" -> "LAVA";
+      case "ROCK" -> "ROCK";
+      case "FLOWER" -> "FLOWER";
       default -> throw new IllegalStateException("Unexpected value: " + name);
     };
   }
