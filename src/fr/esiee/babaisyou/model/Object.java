@@ -66,9 +66,10 @@ public record Object(int x, int y, String name) implements Square {
       case "FLAG" -> "⚑";
       case "WALL" -> "■";
       case "WATER" -> "~";
-      case "SKULL" -> "\\uD83D\\uDC80";
+      case "SKULL" -> "¤";
       case "LAVA" -> "§";
       case "ROCK" -> "*";
+      case "FLOWER" -> "#";
       default -> " ";
     };
   }

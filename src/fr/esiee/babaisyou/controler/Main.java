@@ -10,12 +10,14 @@ import fr.esiee.babaisyou.view.Graphic;
 import fr.esiee.babaisyou.view.ImagesLoader;
 
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int direction;
         Scanner sc = new Scanner(System.in);
 
@@ -67,14 +69,13 @@ public class Main {
 
         board.displayBoard();
 
-        /*
+
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
             Graphic.draw(context, gameBoard, imagesLoader, width, height);
         });
-        */
 
         do {
             System.out.println("Enter the direction : ");

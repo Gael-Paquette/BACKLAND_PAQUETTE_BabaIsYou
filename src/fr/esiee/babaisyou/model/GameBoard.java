@@ -1,5 +1,11 @@
 package fr.esiee.babaisyou.model;
 
+import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -8,13 +14,76 @@ public class GameBoard {
     private final int cols;
     private final Map<String, ArrayList<Square>> board;
 
-    public GameBoard(int rows, int cols) {
+    public GameBoard(Path path) throws IOException {
         if(rows < 1 || cols < 1)
             throw new IllegalArgumentException();
         this.rows = rows;
         this.cols = cols;
         this.board = new LinkedHashMap<>();
         initializeBoard();
+        Objects.requireNonNull(path);
+        this.board = null;
+        try (var reader = Files.newBufferedReader(path)) {
+            String text;
+            String line;
+            text = reader.readLine();
+            var items = text.split(":");
+            this.rows = Integer.parseInt(items[0]);
+            this.cols = Integer.parseInt(items[1]);
+            var col = 0;
+            while ((line = reader.readLine()) != null) {
+                loadGameBoard(line, col);
+                col += 1;
+            }
+        }
+    }
+
+    private void loadGameBoard(String line, int col) {
+        Objects.requireNonNull(line);
+        if (col < 0 || col >= cols) {
+            throw new IllegalArgumentException("Invalid column");
+        }
+        var items = line.split(":");
+        for (int i = 0; i < items.length; i++) {
+          if (items[i].length() == 1) {
+            loadSquare(items[i], i, col);
+          } else {
+            loadRule(items[i], i, col);
+          }
+        }
+    }
+
+    private void loadSquare(String item, int row, int col) {
+        Objects.requireNonNull(item);
+        if (row < 0 || row >= rows || col < 0 || col >= cols) {
+            throw new IllegalArgumentException("Invalid row");
+        }
+        this.board[row][col] = switch (item) {
+          case "X" -> new Object(row, col, "BABA");
+          case "F" -> new Object(row, col, "FLAG");
+          case "■" -> new Object(row, col, "WALL");
+          case "~" -> new Object(row, col, "WATER");
+          case "¤" -> new Object(row, col, "SKULL");
+          case "§" -> new Object(row, col, "LAVA");
+          case "*" -> new Object(row, col, "ROCK");
+          case " " -> new Object(row, col, "NULL");
+          default -> new Object(row, col, "NULL");
+        };
+    }
+
+    private void loadRule(String item, int row, int col) {
+        Objects.requireNonNull(item);
+        if (row < 0 || row >= rows || col < 0 || col >= cols) {
+            throw new IllegalArgumentException("Invalid row");
+        }
+        if (item.equals("BABA") || item.equals("FLAG") || item.equals("WALL") || item.equals("WATER")
+            || item.equals("SKULL") || item.equals("LAVA") || item.equals("ROCK")) {
+            this.board[row][col] = new Name(row, col, item);
+        } else if (item.equals("IS") || item.equals("ON") || item.equals("HAS") || item.equals("AND")) {
+            this.board[row][col] = new Operator(row, col, item);
+        } else {
+            this.board[row][col] = new Property(row, col, item);
+        }
     }
 
     private void initializeBoard() {
