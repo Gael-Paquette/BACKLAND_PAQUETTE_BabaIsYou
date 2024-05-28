@@ -14,12 +14,6 @@ public record Object(int x, int y, String name) implements Square {
   }
 
   @Override
-  public int getX() { return x; }
-
-  @Override
-  public int getY() { return y; }
-
-  @Override
   public boolean isName() { return false; }
 
   @Override
@@ -35,13 +29,41 @@ public record Object(int x, int y, String name) implements Square {
   public boolean isEmpty() { return this.name.equals("NULL"); }
 
   @Override
-  public boolean isPushable() { return this.name.equals("ROCK"); }
+  public boolean isPushable(GameBoard board) {
+    Objects.requireNonNull(board);
+    Rule rule = new Rule();
+    switch (this.name) {
+      case "NULL" -> {
+        return false;
+      }
+      case "ROCK" -> {
+        return rule.isValidRule(board, "ROCK", "IS", "PUSH");
+      }
+      case "WALL" -> {
+        return rule.isValidRule(board, "WALL", "IS", "PUSH");
+      }
+      case "FLAG" -> {
+        return rule.isValidRule(board, "FLAG", "IS", "PUSH");
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean isTraversable(GameBoard board) {
+    Objects.requireNonNull(board);
+    Rule rule = new Rule();
+    if(this.isEmpty())
+      return true;
+    else
+      return rule.hasNoRules(board, this.name());
+  }
 
   @Override
   public String representation() {
     return switch (name) {
       case "BABA" -> "X";
-      case "FLAG" -> "F";
+      case "FLAG" -> "⚑";
       case "WALL" -> "■";
       case "WATER" -> "~";
       case "SKULL" -> "¤";

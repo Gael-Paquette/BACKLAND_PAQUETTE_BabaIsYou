@@ -29,7 +29,7 @@ public class Rule {
     return (leftOperand.isName() && operator.isOperator() && rightOperand.isProperty());
   }
 
-  public boolean isMatchingRule(GameBoard board, int x, int y, String name, String operator, String property, String direction) {
+  public boolean isMatchingRule(GameBoard board, int row, int col, String name, String operator, String property, String direction) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
     Objects.requireNonNull(operator);
@@ -37,12 +37,12 @@ public class Rule {
     Objects.requireNonNull(direction);
 
     Square s, next1, next2;
-    if (x < 0 || x > board.getRows() || y < 0 || y > board.getCols()) {
-      throw new IllegalArgumentException("x or y out of bounds");
+    if (row < 0 || row > board.getRows() || col < 0 || col > board.getCols()) {
+      throw new IllegalArgumentException("row or col out of bounds");
     }
-    s = board.getSquare(x, y);
-    next1 = board.nextSquare(s.getX(), s.getY(), direction);
-    next2 = board.nextSquare(next1.getX(), next1.getY(), direction);
+    s = board.getSquare(row, col);
+    next1 = board.nextSquare(s.x(), s.y(), direction);
+    next2 = board.nextSquare(next1.x(), next1.y(), direction);
     return s.name().equals(name) && next1.name().equals(operator) && next2.name().equals(property);
   }
 
@@ -54,16 +54,24 @@ public class Rule {
     int i, j;
     for (i = 0; i < board.getRows(); i++) {
       for (j = 0; j < board.getCols() - 2; j++) {
-        if(isMatchingRule(board, i, j, name, operator, property, "right"))
-          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "right"), board.nextSquare(i, j+1, "right"));
+        if(isMatchingRule(board, i, j, name, operator, property, "RIGHT"))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "RIGHT"), board.nextSquare(i, j+1, "RIGHT"));
       }
     }
     for (i = 0; i < board.getRows() - 2; i++) {
       for (j = 0; j < board.getCols(); j++) {
-        if (isMatchingRule(board, i, j, name, operator, property, "down"))
-          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "down"), board.nextSquare(i + 1, j, "down"));
+        if (isMatchingRule(board, i, j, name, operator, property, "DOWN"))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "DOWN"), board.nextSquare(i + 1, j, "DOWN"));
       }
     }
     return false;
+  }
+
+  public boolean hasNoRules(GameBoard board, String name) {
+    Objects.requireNonNull(board);
+    Objects.requireNonNull(name);
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+    return !isValidRule(board, name, "IS", "PUSH") && !isValidRule(board, name, "IS", "STOP");
   }
 }

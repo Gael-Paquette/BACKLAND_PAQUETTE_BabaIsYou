@@ -1,9 +1,9 @@
 package fr.esiee.babaisyou.model;
 
 public sealed interface Square permits Name, Operator, Property, Object {
-  int getX();
+  int x();
 
-  int getY();
+  int y();
 
   boolean isName();
 
@@ -15,7 +15,9 @@ public sealed interface Square permits Name, Operator, Property, Object {
 
   boolean isEmpty();
 
-  boolean isPushable();
+  boolean isPushable(GameBoard board);
+
+  boolean isTraversable(GameBoard board);
 
   String representation();
 

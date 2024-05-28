@@ -12,21 +12,15 @@ public record Property(int x, int y, String name) implements Square {
       throw new IllegalArgumentException("X and Y coordinates must be greater than or equal to 0");
     }
   }
-  
-  @Override
-  public int getX() { return x; }
 
   @Override
-  public int getY() { return y; }
-
-  @Override
-  public boolean isName() { return true; }
+  public boolean isName() { return false; }
 
   @Override
   public boolean isOperator() { return false; }
 
   @Override
-  public boolean isProperty() { return false; }
+  public boolean isProperty() { return true; }
 
   @Override
   public boolean isObject() { return false; }
@@ -35,13 +29,22 @@ public record Property(int x, int y, String name) implements Square {
   public boolean isEmpty() { return false; }
 
   @Override
-  public boolean isPushable() { return false; }
+  public boolean isPushable(GameBoard board) {
+    Objects.requireNonNull(board);
+    return true;
+  }
+
+  @Override
+  public boolean isTraversable(GameBoard board) {
+    Objects.requireNonNull(board);
+    return false;
+  }
 
   @Override
   public String representation() {
     return switch (name) {
       case "YOU" -> "Y";
-      case "WIN" -> "F";
+      case "WIN" -> "W";
       case "STOP" -> "S";
       case "PUSH" -> "P";
       case "MELT" -> "M";
