@@ -64,7 +64,7 @@ public class GameBoard {
         }
     }
 
-    public ArrayList<Square> getObjectsOfTheSquare(int row, int col) {
+    public List<Square> getObjectsOfTheSquare(int row, int col) {
         if(inTheBoard(row, col))
             return this.board.get(key(row, col));
         return null;
@@ -303,7 +303,7 @@ public class GameBoard {
     }
 
     public void displayBoard() {
-        ArrayList<Square> squares;
+        List<Square> squares;
         String representations;
         for (int row = 0; row < this.rows; row++) {
             for (int col = 0; col < this.cols; col++) {
