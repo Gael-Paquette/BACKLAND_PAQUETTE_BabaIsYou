@@ -1,19 +1,15 @@
 package fr.esiee.babaisyou.controler;
 
 import com.github.forax.zen.Application;
+import fr.esiee.babaisyou.model.Direction;
 import fr.esiee.babaisyou.model.GameBoard;
-import fr.esiee.babaisyou.model.Object;
-import fr.esiee.babaisyou.model.Name;
-import fr.esiee.babaisyou.model.Operator;
-import fr.esiee.babaisyou.model.Property;
-import fr.esiee.babaisyou.view.Graphic;
+import fr.esiee.babaisyou.view.DrawGame;
 import fr.esiee.babaisyou.view.ImagesLoader;
 
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -21,7 +17,7 @@ public class Main {
         int direction;
         Scanner sc = new Scanner(System.in);
 
-        GameBoard board = new GameBoard(Paths.get("levels/level6.txt"));
+        GameBoard board = new GameBoard(Paths.get("levels/level0.txt"));
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
                 List.of("IS", "ON", "HAS", "AND"),
@@ -29,13 +25,18 @@ public class Main {
         );
         board.displayBoard();
 
-        /*
+
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
-            Graphic.draw(context, gameBoard, imagesLoader, width, height);
-        });*/
+
+            var drawGame = new DrawGame(0, 0, width, height, board, imagesLoader);
+            DrawGame.draw(context, board, drawGame);
+            var event = context.pollOrWaitEvent(10000);
+
+            System.exit(0);
+        });
 
         do {
             System.out.println("Enter the direction : ");
@@ -47,33 +48,37 @@ public class Main {
 
             switch(direction) {
                 case 1:
-                    if(board.facingABlock(board.getSquarePlayer(), "LEFT"))
-                        board.push("LEFT");
-                    board.movePlayer("LEFT");
+                    if(board.facingABlock(board.getSquarePlayer(), Direction.LEFT))
+                        board.push(Direction.LEFT);
+                    board.movePlayer(Direction.LEFT);
                     break;
                 case 2:
-                    if(board.facingABlock(board.getSquarePlayer(), "RIGHT"))
-                        board.push("RIGHT");
-                    board.movePlayer("RIGHT");
+                    if(board.facingABlock(board.getSquarePlayer(), Direction.RIGHT))
+                        board.push(Direction.RIGHT);
+                    board.movePlayer(Direction.RIGHT);
                     break;
                 case 3:
-                    if(board.facingABlock(board.getSquarePlayer(), "UP"))
-                        board.push("UP");
-                    board.movePlayer("UP");
+                    if(board.facingABlock(board.getSquarePlayer(), Direction.UP))
+                        board.push(Direction.UP);
+                    board.movePlayer(Direction.UP);
                     break;
                 case 4:
-                    if(board.facingABlock(board.getSquarePlayer(), "DOWN"))
-                        board.push("DOWN");
-                    board.movePlayer("DOWN");
+                    if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))
+                        board.push(Direction.DOWN);
+                    board.movePlayer(Direction.DOWN);
                     break;
             }
             board.displayBoard();
         } while(!board.win() && board.playerIsPresent());
 
-        if(!board.playerIsPresent())
+        if(!board.playerIsPresent()) {
             System.out.println("Defeat !");
-        else
+            System.exit(0);
+        } else {
             System.out.println("Victory !");
+            System.exit(0);
+        }
+
     }
 
 }

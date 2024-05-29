@@ -1,7 +1,7 @@
 package fr.esiee.babaisyou.view;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ImagesLoader {
-  private final HashMap<String, BufferedImage> imagesObject = new HashMap<>();
-  private final HashMap<String, BufferedImage> imagesText = new HashMap<>();
+  private final HashMap<String, Image> imagesObject = new HashMap<>();
+  private final HashMap<String, Image> imagesText = new HashMap<>();
 
   private Path createPathText(String name, Type type) {
     Objects.requireNonNull(name);
@@ -33,13 +33,13 @@ public class ImagesLoader {
     Objects.requireNonNull(path);
     if (isText) {
       try {
-        imagesText.put(name, ImageIO.read(Objects.requireNonNull(path.toFile())));
+        imagesText.put(name, new ImageIcon(path.toUri().toURL()).getImage());
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     } else {
       try {
-        imagesObject.put(name, ImageIO.read(Objects.requireNonNull(path.toFile())));
+        imagesObject.put(name, new ImageIcon(path.toUri().toURL()).getImage());
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -78,19 +78,19 @@ public class ImagesLoader {
     initImagesProperties(properties);
   }
 
-  public BufferedImage getImageObject(String name) {
+  public Image getImageObject(String name) {
     return imagesObject.getOrDefault(name, null);
   }
 
-  public BufferedImage getImageText(String name) {
+  public Image getImageText(String name) {
     return imagesText.getOrDefault(name, null);
   }
 
-  public HashMap<String, BufferedImage> getImagesObject() {
+  public HashMap<String, Image> getImagesObject() {
     return imagesObject;
   }
 
-  public HashMap<String, BufferedImage> getImagesText() {
+  public HashMap<String, Image> getImagesText() {
     return imagesText;
   }
 }
