@@ -1,12 +1,15 @@
 package fr.esiee.babaisyou.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public record Operator(int x, int y, String name) implements Square {
   public Operator {
     Objects.requireNonNull(name);
-    if (!name.equals("IS") && !name.equals("ON") && !name.equals("HAS") && !name.equals("ROCK")) {
-      throw new IllegalArgumentException("Operator must be 'IS' or 'ON' or 'HAS' or 'ROCK'");
+
+    var operators = List.of("IS", "ON", "HAS", "ROCK");
+    if (!operators.contains(name)) {
+      throw new IllegalArgumentException("Invalid operator : " + name);
     }
     if (x < 0 || y < 0) {
       throw new IllegalArgumentException("X and Y coordinates must be greater than or equal to 0");

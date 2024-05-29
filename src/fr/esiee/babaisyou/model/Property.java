@@ -1,11 +1,14 @@
 package fr.esiee.babaisyou.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public record Property(int x, int y, String name) implements Square {
   public Property {
     Objects.requireNonNull(name);
-    if (!name.equals("YOU") && !name.equals("WIN") && !name.equals("STOP") && !name.equals("PUSH") && !name.equals("MELT") && !name.equals("HOT") && !name.equals("DEFEAT") && !name.equals("SINK")) {
+
+    var properties = List.of("YOU", "WIN", "STOP", "PUSH", "MELT", "HOT", "DEFEAT", "SINK");
+    if (!properties.contains(name)) {
       throw new IllegalArgumentException("Invalid property : " + name);
     }
     if (x < 0 || y < 0) {

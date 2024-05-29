@@ -1,10 +1,8 @@
 package fr.esiee.babaisyou.model;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.*;
@@ -76,7 +74,7 @@ public class GameBoard {
             throw new IllegalArgumentException("Invalid row & col");
         }
 
-        var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+        var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
         var operators = List.of("IS", "ON", "HAS", "AND");
         var properties = List.of("YOU", "WIN", "STOP", "PUSH", "MELT", "HOT", "DEFEAT", "SINK");
         this.board.put(key(row, col), new ArrayList<>());

@@ -1,12 +1,15 @@
 package fr.esiee.babaisyou.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public record Object(int x, int y, String name) implements Square {
   public Object {
     Objects.requireNonNull(name);
-    if (!name.equals("NULL") && !name.equals("BABA") && !name.equals("FLAG") && !name.equals("WALL") && !name.equals("WATER") && !name.equals("SKULL") && !name.equals("LAVA") && !name.equals("ROCK") && !name.equals("FLOWER")) {
-      throw new IllegalArgumentException("Invalid name: " + name);
+
+    var objects = List.of("NULL", "BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
+    if (!objects.contains(name)) {
+      throw new IllegalArgumentException("Invalid object : " + name);
     }
     if (x < 0 || y < 0) {
       throw new IllegalArgumentException("X and Y coordinates must be greater than or equal to 0");
