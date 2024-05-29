@@ -29,7 +29,7 @@ public class Rule {
     return (leftOperand.isName() && operator.isOperator() && rightOperand.isProperty());
   }
 
-  public boolean isMatchingRule(GameBoard board, int row, int col, String name, String operator, String property, String direction) {
+  public boolean isMatchingRule(GameBoard board, int row, int col, String name, String operator, String property, Direction direction) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
     Objects.requireNonNull(operator);
@@ -54,14 +54,14 @@ public class Rule {
     int i, j;
     for (i = 0; i < board.getRows(); i++) {
       for (j = 0; j < board.getCols() - 2; j++) {
-        if(isMatchingRule(board, i, j, name, operator, property, "RIGHT"))
-          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "RIGHT"), board.nextSquare(i, j+1, "RIGHT"));
+        if(isMatchingRule(board, i, j, name, operator, property, Direction.RIGHT))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, Direction.RIGHT), board.nextSquare(i, j+1, Direction.RIGHT));
       }
     }
     for (i = 0; i < board.getRows() - 2; i++) {
       for (j = 0; j < board.getCols(); j++) {
-        if (isMatchingRule(board, i, j, name, operator, property, "DOWN"))
-          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, "DOWN"), board.nextSquare(i + 1, j, "DOWN"));
+        if (isMatchingRule(board, i, j, name, operator, property, Direction.DOWN))
+          return isValidRuleCombination(board.getSquare(i, j), board.nextSquare(i, j, Direction.DOWN), board.nextSquare(i + 1, j, Direction.DOWN));
       }
     }
     return false;
