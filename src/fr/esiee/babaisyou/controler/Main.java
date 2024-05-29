@@ -14,9 +14,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        int direction;
-        Scanner sc = new Scanner(System.in);
-
         GameBoard board = new GameBoard(Paths.get("levels/level0.txt"));
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
@@ -25,60 +22,54 @@ public class Main {
         );
         board.displayBoard();
 
-
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
 
-            var drawGame = new DrawGame(0, 0, width, height, board, imagesLoader);
-            DrawGame.draw(context, board, drawGame);
-            var event = context.pollOrWaitEvent(10000);
+            do {
+                var drawGame = new DrawGame(0, 0, width, height, board, imagesLoader);
+                DrawGame.draw(context, board, drawGame);
+                board.displayBoard();
+                var event = context.pollOrWaitEvent(100);
+                if (event != null) {
+                    var eventGame = new EventGame();
+                    var code = eventGame.manageEvent(event);
+                    switch (code) {
+                        case EXIT -> System.exit(0);
+                        case UP -> {
+                            if(board.facingABlock(board.getSquarePlayer(), Direction.UP))
+                                board.push(Direction.UP);
+                            board.movePlayer(Direction.UP);
+                        }
+                        case DOWN -> {
+                            if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))
+                                board.push(Direction.DOWN);
+                            board.movePlayer(Direction.DOWN);
+                        }
+                        case LEFT -> {
+                            if(board.facingABlock(board.getSquarePlayer(), Direction.LEFT))
+                                board.push(Direction.LEFT);
+                            board.movePlayer(Direction.LEFT);
+                        }
+                        case RIGHT -> {
+                            if(board.facingABlock(board.getSquarePlayer(), Direction.RIGHT))
+                                board.push(Direction.RIGHT);
+                            board.movePlayer(Direction.RIGHT);
+                        }
+                        case AVOID -> {}
+                    }
+                }
+            } while(!board.win() && board.playerIsPresent());
 
-            System.exit(0);
-        });
-
-        do {
-            System.out.println("Enter the direction : ");
-            System.out.println("1 : LEFT");
-            System.out.println("2 : RIGHT");
-            System.out.println("3 : UP");
-            System.out.println("4 : DOWN");
-            direction = Integer.parseInt(sc.nextLine());
-
-            switch(direction) {
-                case 1:
-                    if(board.facingABlock(board.getSquarePlayer(), Direction.LEFT))
-                        board.push(Direction.LEFT);
-                    board.movePlayer(Direction.LEFT);
-                    break;
-                case 2:
-                    if(board.facingABlock(board.getSquarePlayer(), Direction.RIGHT))
-                        board.push(Direction.RIGHT);
-                    board.movePlayer(Direction.RIGHT);
-                    break;
-                case 3:
-                    if(board.facingABlock(board.getSquarePlayer(), Direction.UP))
-                        board.push(Direction.UP);
-                    board.movePlayer(Direction.UP);
-                    break;
-                case 4:
-                    if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))
-                        board.push(Direction.DOWN);
-                    board.movePlayer(Direction.DOWN);
-                    break;
+            if(!board.playerIsPresent()) {
+                System.out.println("Defeat !");
+                System.exit(0);
+            } else {
+                System.out.println("Victory !");
+                System.exit(0);
             }
-            board.displayBoard();
-        } while(!board.win() && board.playerIsPresent());
-
-        if(!board.playerIsPresent()) {
-            System.out.println("Defeat !");
-            System.exit(0);
-        } else {
-            System.out.println("Victory !");
-            System.exit(0);
-        }
-
+        });
     }
 
 }
