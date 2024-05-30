@@ -13,36 +13,36 @@ public class ImagesLoader {
   private final HashMap<String, Image> imagesObject = new HashMap<>();
   private final HashMap<String, Image> imagesText = new HashMap<>();
 
-  private Path createPathText(String name, Type type) {
+  private String createPathText(String name, Type type) {
     Objects.requireNonNull(name);
     Objects.requireNonNull(type);
     return switch (type) {
-      case NOUNS -> Paths.get("images/NOUNS/" + name + "/" + name + ".png");
-      case OPERATORS -> Paths.get("images/OPERATORS/" + name + "/" + name + ".png");
-      case PROPERTIES -> Paths.get("images/PROPERTIES/" + name + "/" + name + ".png");
+      case NOUNS -> "/images/NOUNS/" + name + "/" + name + ".gif";
+      case OPERATORS -> "/images/OPERATORS/" + name + "/" + name + ".gif";
+      case PROPERTIES -> "/images/PROPERTIES/" + name + "/" + name + ".gif";
     };
   }
 
-  private Path createPathObject(String name) {
+  private String createPathObject(String name) {
     Objects.requireNonNull(name);
-    return Paths.get("images/NOUNS/" + name + "/" + name + "_GIF.png");
+    return "/images/NOUNS/" + name + "/" + name + "_GIF.gif";
   }
 
-  private void loadImage(String name, Path path, boolean isText) {
+  private void loadImage(String name, String path, boolean isText) {
     Objects.requireNonNull(name);
     Objects.requireNonNull(path);
     if (isText) {
-      try {
-        imagesText.put(name, new ImageIcon(path.toUri().toURL()).getImage());
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      var imageUrl = ImagesLoader.class.getResource(path);
+      if (imageUrl == null) {
+        throw new IllegalStateException("Image not found: " + path);
       }
+      imagesText.put(name, new ImageIcon(imageUrl).getImage());
     } else {
-      try {
-        imagesObject.put(name, new ImageIcon(path.toUri().toURL()).getImage());
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+      var imageUrl = ImagesLoader.class.getResource(path);
+      if (imageUrl == null) {
+        throw new IllegalStateException("Image not found: " + path);
       }
+      imagesObject.put(name, new ImageIcon(imageUrl).getImage());
     }
   }
 
