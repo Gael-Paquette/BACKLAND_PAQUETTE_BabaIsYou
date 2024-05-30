@@ -5,11 +5,11 @@ import java.util.Objects;
 
 public class Rule {
 
-  public boolean isValidRule(GameBoard board, String name, String operator, String property) {
+  public boolean isValidRule(GameBoard board, String name, String operator, String propertyOrName) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
     Objects.requireNonNull(operator);
-    Objects.requireNonNull(property);
+    Objects.requireNonNull(propertyOrName);
 
     var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
     var operators = List.of("IS", "ON", "HAS", "AND");
@@ -17,16 +17,16 @@ public class Rule {
 
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
     if(!operators.contains(operator)) throw new IllegalArgumentException("Invalid name : " + operator);
-    if(!properties.contains(property)) throw new IllegalArgumentException("Invalid property : " + property);
+    if(!names.contains(propertyOrName) && !properties.contains(propertyOrName)) throw new IllegalArgumentException("Invalid property/name : " + propertyOrName);
 
-    return isValidRuleInDirectionHorizontalOrVertical(board, name, operator, property);
+    return isValidRuleInDirectionHorizontalOrVertical(board, name, operator, propertyOrName);
   }
 
   public boolean isValidRuleCombination(Square leftOperand, Square operator, Square rightOperand) {
     Objects.requireNonNull(leftOperand);
     Objects.requireNonNull(operator);
     Objects.requireNonNull(rightOperand);
-    return (leftOperand.isName() && operator.isOperator() && rightOperand.isProperty());
+    return (leftOperand.isName() && operator.isOperator() && (rightOperand.isProperty() || rightOperand.isName()));
   }
 
   public boolean isMatchingRule(GameBoard board, int row, int col, String name, String operator, String property, Direction direction) {
@@ -73,5 +73,42 @@ public class Rule {
     var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
     return !isValidRule(board, name, "IS", "PUSH") && !isValidRule(board, name, "IS", "STOP");
+  }
+
+  public String[] namesToTransform(GameBoard board) {
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    String [] tab = new String[2];
+    for(String name1 : names) {
+      for(String name2 : names) {
+        if(isValidRule(board, name1, "IS", name2)) {
+          tab[0] = name1;
+          tab[1] = name2;
+          return tab;
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean playerIsPresent(GameBoard board) {
+    Objects.requireNonNull(board);
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU"));
+  }
+
+  public String typeOfPlayerPresent(GameBoard board) {
+    Objects.requireNonNull(board);
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    return players.stream().filter(p -> isValidRule(board, p, "IS", "YOU")).findFirst().orElse("");
+  }
+
+  public boolean playerIsWin(GameBoard board) {
+    Objects.requireNonNull(board);
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    for(String name : players) {
+      if((isValidRule(board, name, "IS", "WIN")) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
+        return true;
+    }
+    return false;
   }
 }
