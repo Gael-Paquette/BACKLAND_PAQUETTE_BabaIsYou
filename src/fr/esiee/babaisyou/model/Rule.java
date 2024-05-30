@@ -78,8 +78,8 @@ public class Rule {
   public String[] namesToTransform(GameBoard board) {
     var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
     String [] tab = new String[2];
-    for(String name1 : names) {
-      for(String name2 : names) {
+    for(var name1 : names) {
+      for(var name2 : names) {
         if(isValidRule(board, name1, "IS", name2)) {
           tab[0] = name1;
           tab[1] = name2;
@@ -90,22 +90,22 @@ public class Rule {
     return null;
   }
 
-  public boolean playerIsPresent(GameBoard board) {
-    Objects.requireNonNull(board);
-    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
-    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU"));
-  }
-
   public String typeOfPlayerPresent(GameBoard board) {
     Objects.requireNonNull(board);
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
     return players.stream().filter(p -> isValidRule(board, p, "IS", "YOU")).findFirst().orElse("");
   }
 
+  public boolean playerIsPresent(GameBoard board) {
+    Objects.requireNonNull(board);
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU"));
+  }
+
   public boolean playerIsWin(GameBoard board) {
     Objects.requireNonNull(board);
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
-    for(String name : players) {
+    for(var name : players) {
       if((isValidRule(board, name, "IS", "WIN")) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
         return true;
     }

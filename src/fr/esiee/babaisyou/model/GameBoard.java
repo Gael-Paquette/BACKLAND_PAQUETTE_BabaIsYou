@@ -116,8 +116,10 @@ public class GameBoard {
 
     public void addSquare(int row, int col, Square square) {
         Objects.requireNonNull(square);
-        if(inTheBoard(row, col))
-            board.get(key(row, col)).add(square);
+        List<Square> squares = new ArrayList<>();
+        squares.add(square);
+        squares.addAll(board.get(key(row, col)));
+        board.put(key(row, col), squares);
     }
 
     public void updateSquare(int row, int col, Square square) {
