@@ -31,25 +31,30 @@ public record Object(int x, int y, String name) implements Square {
   @Override
   public boolean isEmpty() { return this.name.equals("NULL"); }
 
+  /*
+   return switch (direction) {
+    case Direction.LEFT -> getSquare(row, col - 1);
+    case Direction.RIGHT -> getSquare(row, col + 1);
+    case Direction.UP -> getSquare(row - 1, col);
+    case Direction.DOWN -> getSquare(row + 1, col);
+  };
+  */
+
   @Override
   public boolean isPushable(GameBoard board) {
     Objects.requireNonNull(board);
     Rule rule = new Rule();
-    switch (this.name) {
-      case "NULL" -> {
-        return false;
-      }
-      case "ROCK" -> {
-        return rule.isValidRule(board, "ROCK", "IS", "PUSH");
-      }
-      case "WALL" -> {
-        return rule.isValidRule(board, "WALL", "IS", "PUSH");
-      }
-      case "FLAG" -> {
-        return rule.isValidRule(board, "FLAG", "IS", "PUSH");
-      }
-    }
-    return false;
+    return switch (this.name) {
+      case "BABA" -> rule.isValidRule(board,"BABA", "IS", "PUSH");
+      case "FLAG" -> rule.isValidRule(board, "FLAG", "IS", "PUSH");
+      case "WALL" -> rule.isValidRule(board, "WALL", "IS", "PUSH");
+      case "WATER" -> rule.isValidRule(board, "WATER", "IS", "PUSH");
+      case "SKULL" -> rule.isValidRule(board, "SKULL", "IS", "PUSH");
+      case "LAVA" -> rule.isValidRule(board, "LAVA", "IS", "PUSH");
+      case "ROCK" -> rule.isValidRule(board, "ROCK", "IS", "PUSH");
+      case "FLOWER" -> rule.isValidRule(board, "FLOWER", "IS", "PUSH");
+      default -> false;
+    };
   }
 
   @Override
