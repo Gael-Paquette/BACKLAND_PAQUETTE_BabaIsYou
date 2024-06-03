@@ -116,8 +116,10 @@ public class GameBoard {
 
     public void addSquare(int row, int col, Square square) {
         Objects.requireNonNull(square);
-        if(inTheBoard(row, col))
-            board.get(key(row, col)).add(square);
+        List<Square> squares = new ArrayList<>();
+        squares.add(square);
+        squares.addAll(board.get(key(row, col)));
+        board.put(key(row, col), squares);
     }
 
     public void updateSquare(int row, int col, Square square) {
@@ -133,6 +135,15 @@ public class GameBoard {
         if (inTheBoard(row, col)) {
             this.board.get(key(row, col)).clear();
             this.board.get(key(row, col)).addAll(squares);
+        }
+    }
+
+    public void transformSquare(String name1, String name2) {
+        Objects.requireNonNull(name1);
+        Objects.requireNonNull(name2);
+        List<Square> squares = typeofSquare(name1);
+        for(Square square : squares) {
+            updateSquare(square.x(), square.y(), new Object(square.x(), square.y(), name2));
         }
     }
 
@@ -155,6 +166,23 @@ public class GameBoard {
     public boolean haveOneBlockNull(List<Square> squares) {
         Objects.requireNonNull(squares);
         return squares.size() == 1 && squares.getFirst().isEmpty();
+    }
+
+    public String convertNameOfObjectToRepresentation(String name) {
+        Objects.requireNonNull(name);
+        String representation;
+        switch(name) {
+            case "BABA" -> representation = "X";
+            case "FLAG" -> representation = "⚑";
+            case "WALL" -> representation ="■";
+            case "WATER" -> representation = "~";
+            case "SKULL" -> representation = "¤";
+            case "LAVA" -> representation = "§";
+            case "ROCK" -> representation = "*";
+            case "FLOWER" -> representation = "#";
+            default -> representation = " ";
+        }
+        return representation;
     }
 
     public boolean inTheBoard(int row, int col) { return (row >= 0 && row < rows) && (col >= 0 && col < cols); }
@@ -183,41 +211,25 @@ public class GameBoard {
             throw new IllegalArgumentException("Invalid direction " + direction);
     }
 
-    public boolean isRuleActive(String name, String operator, String property) {
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(operator);
-        Objects.requireNonNull(property);
-        Rule rule = new Rule();
-        return rule.isValidRule(this, name, operator, property);
-    }
-
     public Square getSquarePlayer() {
+        Rule rule = new Rule();
+        String nameOfThePlayer = rule.typeOfPlayerPresent(this);
         List<Square> squares = new ArrayList<>();
         for(String key : board.keySet()) {
             squares.addAll(board.get(key));
         }
-        return squares.stream().filter(square -> square.representation().equals("X")).findFirst().get();
-    }
-
-    public boolean playerIsPresent() {
-        return isRuleActive("BABA", "IS", "YOU");
+        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).findFirst().get();
     }
 
     public List<Square> typeofSquare(String name) {
         Objects.requireNonNull(name);
-        var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+        var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
         if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
         List<Square> squares = new ArrayList<>();
         for(String key : board.keySet()) {
             squares.addAll(board.get(key));
         }
-        return squares.stream().filter(square -> square.name().equals(name)).collect(Collectors.toList());
-    }
-
-    public boolean win() {
-        return ((isRuleActive("FLAG", "IS", "WIN")  && typeofSquare("FLAG").stream().anyMatch(this::isPlayerOn)))
-                || ((isRuleActive("ROCK", "IS", "WIN") && typeofSquare("ROCK").stream().anyMatch(this::isPlayerOn)))
-                || ((isRuleActive("WALL", "IS", "WIN") && typeofSquare("WALL").stream().anyMatch(this::isPlayerOn)));
+        return squares.stream().filter(square -> square.isObject() && square.name().equals(name)).collect(Collectors.toList());
     }
 
     public int countElementToPush(Direction direction) {
@@ -313,7 +325,7 @@ public class GameBoard {
         Square player = getSquarePlayer();
         Square nextSquare = nextSquare(player.x(), player.y(), direction);
         squares = getObjectsOfTheSquare(player.x(), player.y());
-        squares = squares.stream().filter(square -> !square.representation().equals("X")).collect(Collectors.toList());
+        squares = squares.stream().filter(square -> !square.representation().equals(convertNameOfObjectToRepresentation(player.name()))).collect(Collectors.toList());
         if(notInTheBoard(nextSquare)) return;
         if (nextSquare.isEmpty() || nextSquare.isTraversable(this)) {
             if (nextSquare.isEmpty())

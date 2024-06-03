@@ -3,6 +3,7 @@ package fr.esiee.babaisyou.controler;
 import com.github.forax.zen.Application;
 import fr.esiee.babaisyou.model.Direction;
 import fr.esiee.babaisyou.model.GameBoard;
+import fr.esiee.babaisyou.model.Rule;
 import fr.esiee.babaisyou.view.DrawGame;
 import fr.esiee.babaisyou.view.ImagesLoader;
 
@@ -14,6 +15,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        Rule rule = new Rule();
         GameBoard board = new GameBoard(Paths.get("levels/level0.txt"));
         ImagesLoader imagesLoader = new ImagesLoader(
                 List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
@@ -41,28 +43,37 @@ public class Main {
                             if(board.facingABlock(board.getSquarePlayer(), Direction.UP))
                                 board.push(Direction.UP);
                             board.movePlayer(Direction.UP);
+                            if(rule.namesToTransform(board) != null)
+                                board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
+
                         }
                         case DOWN -> {
                             if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))
                                 board.push(Direction.DOWN);
                             board.movePlayer(Direction.DOWN);
+                            if(rule.namesToTransform(board) != null)
+                                board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                         }
                         case LEFT -> {
                             if(board.facingABlock(board.getSquarePlayer(), Direction.LEFT))
                                 board.push(Direction.LEFT);
                             board.movePlayer(Direction.LEFT);
+                            if(rule.namesToTransform(board) != null)
+                                board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                         }
                         case RIGHT -> {
                             if(board.facingABlock(board.getSquarePlayer(), Direction.RIGHT))
                                 board.push(Direction.RIGHT);
                             board.movePlayer(Direction.RIGHT);
+                            if(rule.namesToTransform(board) != null)
+                                board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                         }
                         case AVOID -> {}
                     }
                 }
-            } while(!board.win() && board.playerIsPresent());
+            } while(rule.playerIsPresent(board) && !rule.playerIsWin(board));
 
-            if(!board.playerIsPresent()) {
+            if(!rule.playerIsPresent(board)) {
                 System.out.println("Defeat !");
                 System.exit(0);
             } else {
