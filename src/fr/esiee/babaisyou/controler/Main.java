@@ -45,7 +45,6 @@ public class Main {
                             board.movePlayer(Direction.UP);
                             if(rule.namesToTransform(board) != null)
                                 board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
-
                         }
                         case DOWN -> {
                             if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))

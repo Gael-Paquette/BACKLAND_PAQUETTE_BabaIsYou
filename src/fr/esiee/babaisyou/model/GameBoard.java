@@ -317,7 +317,7 @@ public class GameBoard {
         throw new IllegalArgumentException();
     }
 
-    /* LA TRAVERSEEE EST GEREE ICI (PEUT ETRE TEMPORAIREMENT) */
+    /* LA TRAVERSEE EST GEREE ICI (PEUT ETRE TEMPORAIREMENT) */
     public void movePlayer(Direction direction) {
         Objects.requireNonNull(direction);
         validDirection(direction);
@@ -339,41 +339,33 @@ public class GameBoard {
         }
     }
 
-    /* A OPTIMISER */
     public void moveBlock(Square from, Square to) {
         List<Square> squares;
         Objects.requireNonNull(from);
         Objects.requireNonNull(to);
         squares = getObjectsOfTheSquare(from.x(), from.y());
         squares = squares.stream().filter(square -> !square.equals(from)).collect(Collectors.toList());
-        if (from.isObject()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Object(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Object(to.x(), to.y(), from.name()));
-        }
-        else if (from.isName()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Name(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Name(to.x(), to.y(), from.name()));
-        }
-        else if (from.isOperator()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Operator(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Operator(to.x(), to.y(), from.name()));
-        }
-        else if(from.isProperty()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Property(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Property(to.x(), to.y(), from.name()));
-        }
+
+        if (from.isObject())
+            moveBlock_aux(to, new Object(to.x(), to.y(), from.name()));
+        else if (from.isName())
+            moveBlock_aux(to, new Name(to.x(), to.y(), from.name()));
+        else if (from.isOperator())
+            moveBlock_aux(to, new Operator(to.x(), to.y(), from.name()));
+        else if(from.isProperty())
+            moveBlock_aux(to, new Property(to.x(), to.y(), from.name()));
+
         if (squares.isEmpty())
             updateSquare(from.x(), from.y(), new Object(from.x(), from.y(), "NULL"));
         else
             updateAllSquares(from.x(), from.y(), squares);
+    }
+
+    private void moveBlock_aux(Square to, Square newSquare) {
+        if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
+            updateSquare(to.x(), to.y(), newSquare);
+        else
+            addSquare(to.x(), to.y(), newSquare);
     }
 
     public void displayBoard() {
