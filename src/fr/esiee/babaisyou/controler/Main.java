@@ -42,53 +42,37 @@ public class Main {
                     switch (code) {
                         case EXIT -> System.exit(0);
                         case UP -> {
-                            if(board.facingABlock(board.getSquarePlayer(), Direction.UP))
-                                board.push(Direction.UP);
-                            if(player.size() == 1)
-                                board.movePlayer(board.getSquarePlayer(), Direction.UP);
-                            else {
-                                for (Square square : player) {
-                                    board.movePlayer(square, Direction.UP);
-                                }
+                            for (Square square : player) {
+                                if(board.facingABlock(square, Direction.UP))
+                                    board.push(Direction.UP);
+                                board.movePlayer(square, Direction.UP);
                             }
                             if(rule.namesToTransform(board) != null)
                                 board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                         }
                         case DOWN -> {
-                            if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))
-                                board.push(Direction.DOWN);
-                            if(player.size() == 1)
-                                board.movePlayer(board.getSquarePlayer(), Direction.DOWN);
-                            else {
-                                for (Square square : player) {
-                                    board.movePlayer(square, Direction.DOWN);
-                                }
+                            for (Square square : player) {
+                                if(board.facingABlock(square, Direction.DOWN))
+                                    board.push(Direction.DOWN);
+                                board.movePlayer(square, Direction.DOWN);
                             }
                             if(rule.namesToTransform(board) != null)
                                 board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                         }
                         case LEFT -> {
-                            if(board.facingABlock(board.getSquarePlayer(), Direction.LEFT))
-                                board.push(Direction.LEFT);
-                            if(player.size() == 1)
-                                board.movePlayer(board.getSquarePlayer(), Direction.LEFT);
-                            else {
-                                for (Square square : player) {
-                                    board.movePlayer(square, Direction.LEFT);
-                                }
+                            for (Square square : player) {
+                                if(board.facingABlock(square, Direction.LEFT))
+                                    board.push(Direction.LEFT);
+                                board.movePlayer(square, Direction.LEFT);
                             }
                             if(rule.namesToTransform(board) != null)
                                 board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                         }
                         case RIGHT -> {
-                            if(board.facingABlock(board.getSquarePlayer(), Direction.RIGHT))
-                                board.push(Direction.RIGHT);
-                            if(player.size() == 1)
-                                board.movePlayer(board.getSquarePlayer(), Direction.RIGHT);
-                            else {
-                                for (Square square : player) {
-                                    board.movePlayer(square, Direction.RIGHT);
-                                }
+                            for (Square square : player) {
+                                if(board.facingABlock(square, Direction.RIGHT))
+                                    board.push(Direction.RIGHT);
+                                board.movePlayer(square, Direction.RIGHT);
                             }
                             if(rule.namesToTransform(board) != null)
                                 board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
