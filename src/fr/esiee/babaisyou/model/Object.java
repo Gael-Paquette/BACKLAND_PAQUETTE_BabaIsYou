@@ -81,4 +81,9 @@ public record Object(int x, int y, String name) implements Square {
       default -> " ";
     };
   }
+
+  @Override
+  public String toString() {
+    return ("(Object) " + this.name + " x : " + this.x + ", y : " + this.y + ", representation : " + this.representation());
+  }
 }

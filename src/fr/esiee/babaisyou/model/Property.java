@@ -57,4 +57,9 @@ public record Property(int x, int y, String name) implements Square {
       default -> throw new IllegalStateException("Unexpected value: " + name);
     };
   }
+
+  @Override
+  public String toString() {
+    return ("(Property) " + this.name + " x : " + this.x + ", y : " + this.y + ", representation : " + this.representation());
+  }
 }

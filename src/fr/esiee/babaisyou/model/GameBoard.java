@@ -216,20 +216,21 @@ public class GameBoard {
     }
 
     public Square getSquarePlayer() {
+        Square defaultSquare = new Object(0,0, "NULL");
         Rule rule = new Rule();
-        String nameOfThePlayer = rule.typeOfPlayerPresent(this);
+        var nameOfThePlayer = rule.typeOfPlayerPresent(this);
         List<Square> squares = new ArrayList<>();
-        for(String key : board.keySet()) {
+        for(var key : board.keySet()) {
             squares.addAll(board.get(key));
         }
-        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).findFirst().get();
+        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).findFirst().orElse(defaultSquare);
     }
 
     public List<Square> getSquaresPlayer() {
         Rule rule = new Rule();
         String nameOfThePlayer = rule.typeOfPlayerPresent(this);
         List<Square> squares = new ArrayList<>();
-        for(String key : board.keySet()) {
+        for(var key : board.keySet()) {
             squares.addAll(board.get(key));
         }
         return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).toList();
@@ -240,7 +241,7 @@ public class GameBoard {
         var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
         if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
         List<Square> squares = new ArrayList<>();
-        for(String key : board.keySet()) {
+        for(var key : board.keySet()) {
             squares.addAll(board.get(key));
         }
         return squares.stream().filter(square -> square.isObject() && square.name().equals(name)).collect(Collectors.toList());

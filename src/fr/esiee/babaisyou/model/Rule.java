@@ -99,7 +99,7 @@ public class Rule {
   public boolean playerIsPresent(GameBoard board) {
     Objects.requireNonNull(board);
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
-    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU"));
+    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU")) && !board.typeofSquare(typeOfPlayerPresent(board)).isEmpty();
   }
 
   public boolean playerIsWin(GameBoard board) {
