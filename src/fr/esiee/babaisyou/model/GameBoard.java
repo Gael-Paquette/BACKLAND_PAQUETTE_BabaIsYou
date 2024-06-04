@@ -191,8 +191,12 @@ public class GameBoard {
 
     public boolean isPlayerOn(Square square) {
         Objects.requireNonNull(square);
-        Square player = getSquarePlayer();
-        return player != null && player.x() == square.x() && player.y() == square.y();
+        List<Square> squares = getSquaresPlayer();
+        for(Square player : squares) {
+            if(player.x() == square.x() && player.y() == square.y())
+                return true;
+        }
+        return false;
     }
 
     public boolean facingABlock(Square player, Direction direction) {
@@ -219,6 +223,16 @@ public class GameBoard {
             squares.addAll(board.get(key));
         }
         return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).findFirst().get();
+    }
+
+    public List<Square> getSquaresPlayer() {
+        Rule rule = new Rule();
+        String nameOfThePlayer = rule.typeOfPlayerPresent(this);
+        List<Square> squares = new ArrayList<>();
+        for(String key : board.keySet()) {
+            squares.addAll(board.get(key));
+        }
+        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).toList();
     }
 
     public List<Square> typeofSquare(String name) {
@@ -317,14 +331,11 @@ public class GameBoard {
         throw new IllegalArgumentException();
     }
 
-    /* LA TRAVERSEE EST GEREE ICI (PEUT ETRE TEMPORAIREMENT) */
-    public void movePlayer(Direction direction) {
+    public void movePlayer(Square player, Direction direction) {
         Objects.requireNonNull(direction);
         validDirection(direction);
-        List<Square> squares;
-        Square player = getSquarePlayer();
         Square nextSquare = nextSquare(player.x(), player.y(), direction);
-        squares = getObjectsOfTheSquare(player.x(), player.y());
+        List<Square> squares = getObjectsOfTheSquare(player.x(), player.y());
         squares = squares.stream().filter(square -> !square.representation().equals(convertNameOfObjectToRepresentation(player.name()))).collect(Collectors.toList());
         if(notInTheBoard(nextSquare)) return;
         if (nextSquare.isEmpty() || nextSquare.isTraversable(this)) {
@@ -347,13 +358,13 @@ public class GameBoard {
         squares = squares.stream().filter(square -> !square.equals(from)).collect(Collectors.toList());
 
         if (from.isObject())
-            moveBlock_aux(to, new Object(to.x(), to.y(), from.name()));
+            moveBlockAux(to, new Object(to.x(), to.y(), from.name()));
         else if (from.isName())
-            moveBlock_aux(to, new Name(to.x(), to.y(), from.name()));
+            moveBlockAux(to, new Name(to.x(), to.y(), from.name()));
         else if (from.isOperator())
-            moveBlock_aux(to, new Operator(to.x(), to.y(), from.name()));
+            moveBlockAux(to, new Operator(to.x(), to.y(), from.name()));
         else if(from.isProperty())
-            moveBlock_aux(to, new Property(to.x(), to.y(), from.name()));
+            moveBlockAux(to, new Property(to.x(), to.y(), from.name()));
 
         if (squares.isEmpty())
             updateSquare(from.x(), from.y(), new Object(from.x(), from.y(), "NULL"));
@@ -361,7 +372,7 @@ public class GameBoard {
             updateAllSquares(from.x(), from.y(), squares);
     }
 
-    private void moveBlock_aux(Square to, Square newSquare) {
+    private void moveBlockAux(Square to, Square newSquare) {
         if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
             updateSquare(to.x(), to.y(), newSquare);
         else
