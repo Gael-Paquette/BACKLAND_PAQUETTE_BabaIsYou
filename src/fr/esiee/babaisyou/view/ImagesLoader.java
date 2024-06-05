@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class ImagesLoader {
@@ -83,11 +84,11 @@ public class ImagesLoader {
     return imagesText.getOrDefault(name, null);
   }
 
-  public HashMap<String, Image> getImagesObject() {
+  public Map<String, Image> getImagesObject() {
     return imagesObject;
   }
 
-  public HashMap<String, Image> getImagesText() {
+  public Map<String, Image> getImagesText() {
     return imagesText;
   }
 }
