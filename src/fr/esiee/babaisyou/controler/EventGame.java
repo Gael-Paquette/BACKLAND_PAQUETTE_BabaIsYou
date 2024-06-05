@@ -12,13 +12,16 @@ public class EventGame {
 
   private Code manageKeyboardEvent(KeyboardEvent event) {
     Objects.requireNonNull(event);
-    return switch (event.key()) {
-      case KeyboardEvent.Key.Q -> Code.EXIT;
-      case KeyboardEvent.Key.UP -> Code.UP;
-      case KeyboardEvent.Key.DOWN -> Code.DOWN;
-      case KeyboardEvent.Key.LEFT -> Code.LEFT;
-      case KeyboardEvent.Key.RIGHT -> Code.RIGHT;
-      default -> Code.AVOID;
+    return switch (event.action()) {
+      case KEY_PRESSED -> switch (event.key()) {
+        case KeyboardEvent.Key.Q -> Code.EXIT;
+        case KeyboardEvent.Key.UP -> Code.UP;
+        case KeyboardEvent.Key.DOWN -> Code.DOWN;
+        case KeyboardEvent.Key.LEFT -> Code.LEFT;
+        case KeyboardEvent.Key.RIGHT -> Code.RIGHT;
+        default -> Code.AVOID;
+      };
+      case KEY_RELEASED -> Code.AVOID;
     };
   }
 
