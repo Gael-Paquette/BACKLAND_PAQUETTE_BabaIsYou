@@ -64,7 +64,7 @@ public record Object(int x, int y, String name) implements Square {
     if(this.isEmpty())
       return true;
     else
-      return rule.hasNoRules(board, this.name());
+      return rule.isTraversable(board, this.name());
   }
 
   @Override

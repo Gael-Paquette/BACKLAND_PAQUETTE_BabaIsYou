@@ -67,7 +67,7 @@ public class Rule {
     return false;
   }
 
-  public boolean hasNoRules(GameBoard board, String name) {
+  public boolean isTraversable(GameBoard board, String name) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
     var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
@@ -88,6 +88,13 @@ public class Rule {
       }
     }
     return null;
+  }
+
+  public boolean isSink(GameBoard board, String name) {
+    Objects.requireNonNull(board);
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+    return isValidRule(board, name, "IS", "SINK");
   }
 
   public String typeOfPlayerPresent(GameBoard board) {

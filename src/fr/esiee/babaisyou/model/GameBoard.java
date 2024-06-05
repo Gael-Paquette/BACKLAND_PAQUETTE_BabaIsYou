@@ -216,8 +216,8 @@ public class GameBoard {
     }
 
     public Square getSquarePlayer() {
-        Square defaultSquare = new Object(0,0, "NULL");
         Rule rule = new Rule();
+        Square defaultSquare = new Object(0,0, "NULL");
         var nameOfThePlayer = rule.typeOfPlayerPresent(this);
         List<Square> squares = new ArrayList<>();
         for(var key : board.keySet()) {
@@ -374,10 +374,15 @@ public class GameBoard {
     }
 
     private void moveBlockAux(Square to, Square newSquare) {
+        Rule rule = new Rule();
         if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
             updateSquare(to.x(), to.y(), newSquare);
-        else
-            addSquare(to.x(), to.y(), newSquare);
+        else {
+            if(board.get(key(to.x(), to.y())).stream().anyMatch(s -> s.isObject() && rule.isSink(this, s.name())))
+                updateSquare(to.x(), to.y(), new Object(to.x(), to.y(), "NULL"));
+            else
+                addSquare(to.x(), to.y(), newSquare);
+        }
     }
 
     public void displayBoard() {
