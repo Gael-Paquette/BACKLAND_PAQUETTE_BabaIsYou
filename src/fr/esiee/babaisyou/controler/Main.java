@@ -39,6 +39,7 @@ public class Main {
                     ClearWindow.clearWindow(context, clearWidow);
                     GameBoard board = new GameBoard(Paths.get("levels/level" + level + ".txt"));
                     do {
+                        List<Square> player = board.getSquaresPlayer();
                         var drawGame = new DrawGame(0, 0, width, height, board, imagesLoader);
                         DrawGame.draw(context, board, drawGame);
                         board.displayBoard();
@@ -49,31 +50,39 @@ public class Main {
                             switch (code) {
                                 case EXIT -> System.exit(0);
                                 case UP -> {
-                                    if(board.facingABlock(board.getSquarePlayer(), Direction.UP))
-                                        board.push(Direction.UP);
-                                    board.movePlayer(Direction.UP);
+                                    for (var square : player) {
+                                        if (board.facingABlock(square, Direction.UP))
+                                            board.push(Direction.UP);
+                                        board.movePlayer(square, Direction.UP);
+                                    }
                                     if(rule.namesToTransform(board) != null)
                                         board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
 
                                 }
                                 case DOWN -> {
-                                    if(board.facingABlock(board.getSquarePlayer(), Direction.DOWN))
-                                        board.push(Direction.DOWN);
-                                    board.movePlayer(Direction.DOWN);
+                                    for (var square : player) {
+                                        if (board.facingABlock(square, Direction.DOWN))
+                                            board.push(Direction.DOWN);
+                                        board.movePlayer(square, Direction.DOWN);
+                                    }
                                     if(rule.namesToTransform(board) != null)
                                         board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                                 }
                                 case LEFT -> {
-                                    if(board.facingABlock(board.getSquarePlayer(), Direction.LEFT))
-                                        board.push(Direction.LEFT);
-                                    board.movePlayer(Direction.LEFT);
+                                    for (var square : player) {
+                                        if(board.facingABlock(square, Direction.LEFT))
+                                            board.push(Direction.LEFT);
+                                        board.movePlayer(square, Direction.LEFT);
+                                    }
                                     if(rule.namesToTransform(board) != null)
                                         board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                                 }
                                 case RIGHT -> {
-                                    if(board.facingABlock(board.getSquarePlayer(), Direction.RIGHT))
-                                        board.push(Direction.RIGHT);
-                                    board.movePlayer(Direction.RIGHT);
+                                    for (var square : player) {
+                                        if (board.facingABlock(square, Direction.RIGHT))
+                                            board.push(Direction.RIGHT);
+                                        board.movePlayer(square, Direction.RIGHT);
+                                    }
                                     if(rule.namesToTransform(board) != null)
                                         board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
                                 }
