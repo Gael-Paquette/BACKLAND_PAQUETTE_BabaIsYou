@@ -102,6 +102,16 @@ public class Rule {
     return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU")) && !board.typeofSquare(typeOfPlayerPresent(board)).isEmpty();
   }
 
+  public boolean playerHasLost(GameBoard board) {
+    Objects.requireNonNull(board);
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    for(var name : players) {
+      if((isValidRule(board, name, "IS", "DEFEAT") || (isValidRule(board, name, "IS", "SINK"))) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
+        return true;
+    }
+    return false;
+  }
+
   public boolean playerIsWin(GameBoard board) {
     Objects.requireNonNull(board);
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");

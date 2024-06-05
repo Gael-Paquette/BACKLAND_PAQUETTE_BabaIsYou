@@ -80,9 +80,9 @@ public class Main {
                         case AVOID -> {}
                     }
                 }
-            } while(rule.playerIsPresent(board) && !rule.playerIsWin(board));
+            } while(rule.playerIsPresent(board) && !rule.playerIsWin(board) && !rule.playerHasLost(board));
 
-            if(!rule.playerIsPresent(board)) {
+            if(!rule.playerIsPresent(board) || rule.playerHasLost(board)) {
                 System.out.println("Defeat !");
                 System.exit(0);
             } else {
