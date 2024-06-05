@@ -10,7 +10,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -83,14 +82,24 @@ public class Main {
                     if (!rule.playerIsWin(board)) {
                         System.out.println("Defeat ! ");
                         DrawEnd.draw(context, drawEnd, "DEFEAT");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ignored) {}
                         System.exit(0);
                     } else if (!rule.playerIsPresent(board)) {
                         System.out.println("Defeat !");
                         DrawEnd.draw(context, drawEnd, "DEFEAT");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ignored) {}
+                        context.pollOrWaitEvent(100);
                         System.exit(0);
                     } else {
                         System.out.println("Victory !");
                         DrawEnd.draw(context, drawEnd, "CONGRATULATIONS");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ignored) {}
                     }
                 } catch (IOException e) {
                     throw new RuntimeException(e);
