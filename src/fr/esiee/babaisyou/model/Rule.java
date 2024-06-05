@@ -67,7 +67,7 @@ public class Rule {
     return false;
   }
 
-  public boolean hasNoRules(GameBoard board, String name) {
+  public boolean isTraversable(GameBoard board, String name) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
     var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
@@ -90,6 +90,13 @@ public class Rule {
     return null;
   }
 
+  public boolean isSink(GameBoard board, String name) {
+    Objects.requireNonNull(board);
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+    return isValidRule(board, name, "IS", "SINK");
+  }
+
   public String typeOfPlayerPresent(GameBoard board) {
     Objects.requireNonNull(board);
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
@@ -99,7 +106,17 @@ public class Rule {
   public boolean playerIsPresent(GameBoard board) {
     Objects.requireNonNull(board);
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
-    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU"));
+    return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU")) && !board.typeofSquare(typeOfPlayerPresent(board)).isEmpty();
+  }
+
+  public boolean playerHasLost(GameBoard board) {
+    Objects.requireNonNull(board);
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    for(var name : players) {
+      if((isValidRule(board, name, "IS", "DEFEAT") || (isValidRule(board, name, "IS", "SINK"))) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
+        return true;
+    }
+    return false;
   }
 
   public boolean playerIsWin(GameBoard board) {

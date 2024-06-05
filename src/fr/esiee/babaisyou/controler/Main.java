@@ -4,6 +4,9 @@ import com.github.forax.zen.Application;
 import fr.esiee.babaisyou.model.Direction;
 import fr.esiee.babaisyou.model.GameBoard;
 import fr.esiee.babaisyou.model.Rule;
+import fr.esiee.babaisyou.model.Square;
+import fr.esiee.babaisyou.view.DrawGame;
+import fr.esiee.babaisyou.view.ImagesLoader;
 import fr.esiee.babaisyou.view.*;
 
 import java.awt.*;

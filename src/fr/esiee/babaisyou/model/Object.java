@@ -64,7 +64,7 @@ public record Object(int x, int y, String name) implements Square {
     if(this.isEmpty())
       return true;
     else
-      return rule.hasNoRules(board, this.name());
+      return rule.isTraversable(board, this.name());
   }
 
   @Override
@@ -80,5 +80,10 @@ public record Object(int x, int y, String name) implements Square {
       case "FLOWER" -> "#";
       default -> " ";
     };
+  }
+
+  @Override
+  public String toString() {
+    return ("(Object) " + this.name + " x : " + this.x + ", y : " + this.y + ", representation : " + this.representation());
   }
 }

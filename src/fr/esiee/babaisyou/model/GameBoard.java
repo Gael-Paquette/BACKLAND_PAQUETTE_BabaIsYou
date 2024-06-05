@@ -191,8 +191,12 @@ public class GameBoard {
 
     public boolean isPlayerOn(Square square) {
         Objects.requireNonNull(square);
-        Square player = getSquarePlayer();
-        return player != null && player.x() == square.x() && player.y() == square.y();
+        List<Square> squares = getSquaresPlayer();
+        for(Square player : squares) {
+            if(player.x() == square.x() && player.y() == square.y())
+                return true;
+        }
+        return false;
     }
 
     public boolean facingABlock(Square player, Direction direction) {
@@ -213,12 +217,23 @@ public class GameBoard {
 
     public Square getSquarePlayer() {
         Rule rule = new Rule();
-        String nameOfThePlayer = rule.typeOfPlayerPresent(this);
+        Square defaultSquare = new Object(0,0, "NULL");
+        var nameOfThePlayer = rule.typeOfPlayerPresent(this);
         List<Square> squares = new ArrayList<>();
-        for(String key : board.keySet()) {
+        for(var key : board.keySet()) {
             squares.addAll(board.get(key));
         }
-        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).findFirst().get();
+        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).findFirst().orElse(defaultSquare);
+    }
+
+    public List<Square> getSquaresPlayer() {
+        Rule rule = new Rule();
+        String nameOfThePlayer = rule.typeOfPlayerPresent(this);
+        List<Square> squares = new ArrayList<>();
+        for(var key : board.keySet()) {
+            squares.addAll(board.get(key));
+        }
+        return squares.stream().filter(square -> square.representation().equals(convertNameOfObjectToRepresentation(nameOfThePlayer))).toList();
     }
 
     public List<Square> typeofSquare(String name) {
@@ -226,7 +241,7 @@ public class GameBoard {
         var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
         if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
         List<Square> squares = new ArrayList<>();
-        for(String key : board.keySet()) {
+        for(var key : board.keySet()) {
             squares.addAll(board.get(key));
         }
         return squares.stream().filter(square -> square.isObject() && square.name().equals(name)).collect(Collectors.toList());
@@ -317,14 +332,11 @@ public class GameBoard {
         throw new IllegalArgumentException();
     }
 
-    /* LA TRAVERSEEE EST GEREE ICI (PEUT ETRE TEMPORAIREMENT) */
-    public void movePlayer(Direction direction) {
+    public void movePlayer(Square player, Direction direction) {
         Objects.requireNonNull(direction);
         validDirection(direction);
-        List<Square> squares;
-        Square player = getSquarePlayer();
         Square nextSquare = nextSquare(player.x(), player.y(), direction);
-        squares = getObjectsOfTheSquare(player.x(), player.y());
+        List<Square> squares = getObjectsOfTheSquare(player.x(), player.y());
         squares = squares.stream().filter(square -> !square.representation().equals(convertNameOfObjectToRepresentation(player.name()))).collect(Collectors.toList());
         if(notInTheBoard(nextSquare)) return;
         if (nextSquare.isEmpty() || nextSquare.isTraversable(this)) {
@@ -339,41 +351,38 @@ public class GameBoard {
         }
     }
 
-    /* A OPTIMISER */
     public void moveBlock(Square from, Square to) {
         List<Square> squares;
         Objects.requireNonNull(from);
         Objects.requireNonNull(to);
         squares = getObjectsOfTheSquare(from.x(), from.y());
         squares = squares.stream().filter(square -> !square.equals(from)).collect(Collectors.toList());
-        if (from.isObject()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Object(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Object(to.x(), to.y(), from.name()));
-        }
-        else if (from.isName()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Name(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Name(to.x(), to.y(), from.name()));
-        }
-        else if (from.isOperator()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Operator(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Operator(to.x(), to.y(), from.name()));
-        }
-        else if(from.isProperty()) {
-            if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
-                updateSquare(to.x(), to.y(), new Property(to.x(), to.y(), from.name()));
-            else
-                addSquare(to.x(), to.y(), new Property(to.x(), to.y(), from.name()));
-        }
+
+        if (from.isObject())
+            moveBlockAux(to, new Object(to.x(), to.y(), from.name()));
+        else if (from.isName())
+            moveBlockAux(to, new Name(to.x(), to.y(), from.name()));
+        else if (from.isOperator())
+            moveBlockAux(to, new Operator(to.x(), to.y(), from.name()));
+        else if(from.isProperty())
+            moveBlockAux(to, new Property(to.x(), to.y(), from.name()));
+
         if (squares.isEmpty())
             updateSquare(from.x(), from.y(), new Object(from.x(), from.y(), "NULL"));
         else
             updateAllSquares(from.x(), from.y(), squares);
+    }
+
+    private void moveBlockAux(Square to, Square newSquare) {
+        Rule rule = new Rule();
+        if(haveOneBlockNull(board.get(key(to.x(), to.y()))))
+            updateSquare(to.x(), to.y(), newSquare);
+        else {
+            if(board.get(key(to.x(), to.y())).stream().anyMatch(s -> s.isObject() && rule.isSink(this, s.name())))
+                updateSquare(to.x(), to.y(), new Object(to.x(), to.y(), "NULL"));
+            else
+                addSquare(to.x(), to.y(), newSquare);
+        }
     }
 
     public void displayBoard() {
