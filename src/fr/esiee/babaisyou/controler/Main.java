@@ -1,123 +1,21 @@
 package fr.esiee.babaisyou.controler;
 
 import com.github.forax.zen.Application;
-import fr.esiee.babaisyou.model.Direction;
-import fr.esiee.babaisyou.model.GameBoard;
-import fr.esiee.babaisyou.model.Rule;
-import fr.esiee.babaisyou.model.Square;
-import fr.esiee.babaisyou.view.DrawGame;
-import fr.esiee.babaisyou.view.ImagesLoader;
-import fr.esiee.babaisyou.view.*;
-
 import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        Rule rule = new Rule();
-        ImagesLoader imagesLoader = new ImagesLoader(
-                List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
-                List.of("IS", "ON", "HAS", "AND"),
-                List.of("YOU", "WIN", "STOP", "PUSH", "MELT", "HOT", "DEFEAT", "SINK")
-        );
-        ImagesEndLoader imagesEndLoader = new ImagesEndLoader(
-                List.of("CONGRATULATIONS", "DEFEAT")
-        );
+    public static void main(String[] args) {
+        var rule = Game.newRule();
+        var imagesLoader = Game.newImagesLoader();
+        var imagesEndLoader = Game.newImagesEndLoader();
 
         Application.run(Color.BLACK, context -> {
             var screenInfo = context.getScreenInfo();
             var width = screenInfo.width();
             var height = screenInfo.height();
-            var level = 0;
 
-            do {
-                try {
-                    var clearWidow = new ClearWindow(0, 0, width, height);
-                    var drawEnd = new DrawEnd(0, 0, width, height, imagesEndLoader);
-                    ClearWindow.clearWindow(context, clearWidow);
-                    GameBoard board = new GameBoard(Paths.get("levels/level" + level + ".txt"));
-                    do {
-                        List<Square> player = board.getSquaresPlayer();
-                        var drawGame = new DrawGame(0, 0, width, height, board, imagesLoader);
-                        DrawGame.draw(context, board, drawGame);
-                        board.displayBoard();
-                        var event = context.pollOrWaitEvent(100);
-                        if (event != null) {
-                            var eventGame = new EventGame();
-                            var code = eventGame.manageEvent(event);
-                            switch (code) {
-                                case EXIT -> System.exit(0);
-                                case UP -> {
-                                    for (var square : player) {
-                                        if (board.facingABlock(square, Direction.UP))
-                                            board.push(Direction.UP);
-                                        board.movePlayer(square, Direction.UP);
-                                    }
-                                    if(rule.namesToTransform(board) != null)
-                                        board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
-
-                                }
-                                case DOWN -> {
-                                    for (var square : player) {
-                                        if (board.facingABlock(square, Direction.DOWN))
-                                            board.push(Direction.DOWN);
-                                        board.movePlayer(square, Direction.DOWN);
-                                    }
-                                    if(rule.namesToTransform(board) != null)
-                                        board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
-                                }
-                                case LEFT -> {
-                                    for (var square : player) {
-                                        if(board.facingABlock(square, Direction.LEFT))
-                                            board.push(Direction.LEFT);
-                                        board.movePlayer(square, Direction.LEFT);
-                                    }
-                                    if(rule.namesToTransform(board) != null)
-                                        board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
-                                }
-                                case RIGHT -> {
-                                    for (var square : player) {
-                                        if (board.facingABlock(square, Direction.RIGHT))
-                                            board.push(Direction.RIGHT);
-                                        board.movePlayer(square, Direction.RIGHT);
-                                    }
-                                    if(rule.namesToTransform(board) != null)
-                                        board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
-                                }
-                                case AVOID -> {}
-                            }
-                        }
-                    } while(rule.playerIsPresent(board) && !rule.playerIsWin(board));
-
-                    if (!rule.playerIsWin(board)) {
-                        System.out.println("Defeat ! ");
-                        DrawEnd.draw(context, drawEnd, "DEFEAT");
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ignored) {}
-                        System.exit(0);
-                    } else if (!rule.playerIsPresent(board)) {
-                        System.out.println("Defeat !");
-                        DrawEnd.draw(context, drawEnd, "DEFEAT");
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ignored) {}
-                        context.pollOrWaitEvent(100);
-                        System.exit(0);
-                    } else {
-                        System.out.println("Victory !");
-                        DrawEnd.draw(context, drawEnd, "CONGRATULATIONS");
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ignored) {}
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-              level++;
-            } while (level < 7);
+            Game.playGame(context, imagesEndLoader, imagesLoader, rule, width, height);
             System.exit(0);
         });
     }
