@@ -2,7 +2,6 @@ package fr.esiee.babaisyou.controler;
 
 import com.github.forax.zen.Application;
 import java.awt.*;
-import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
