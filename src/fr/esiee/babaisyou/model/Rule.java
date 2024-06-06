@@ -90,6 +90,20 @@ public class Rule {
     return null;
   }
 
+  public boolean isMelt(GameBoard board, String name) {
+    Objects.requireNonNull(board);
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+    return isValidRule(board, name, "IS", "MELT");
+  }
+
+  public boolean isHot(GameBoard board, String name) {
+    Objects.requireNonNull(board);
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
+    return isValidRule(board, name, "IS", "HOT");
+  }
+
   public boolean isSink(GameBoard board, String name) {
     Objects.requireNonNull(board);
     var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
@@ -114,6 +128,8 @@ public class Rule {
     var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
     for(var name : players) {
       if((isValidRule(board, name, "IS", "DEFEAT") || (isValidRule(board, name, "IS", "SINK"))) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
+        return true;
+      else if(isValidRule(board, typeOfPlayerPresent(board), "IS", "MELT") && isValidRule(board, name,"IS", "HOT") && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
         return true;
     }
     return false;

@@ -380,6 +380,9 @@ public class GameBoard {
         else {
             if(board.get(key(to.x(), to.y())).stream().anyMatch(s -> s.isObject() && rule.isSink(this, s.name())))
                 updateSquare(to.x(), to.y(), new Object(to.x(), to.y(), "NULL"));
+            else if(board.get(key(to.x(), to.y())).stream().anyMatch(s -> s.isObject() && rule.isHot(this, s.name())) && (newSquare.isObject() && rule.isMelt(this, newSquare.name()))) {
+                // BLOKEN BLOCK
+            }
             else
                 addSquare(to.x(), to.y(), newSquare);
         }
