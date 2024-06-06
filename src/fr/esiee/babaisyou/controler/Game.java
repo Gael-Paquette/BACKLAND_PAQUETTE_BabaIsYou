@@ -61,6 +61,8 @@ public class Game {
       Game.drawDefeat(context, drawEnd);
     } else if (!rule.playerIsPresent(board)) {
       Game.drawDefeat(context, drawEnd);
+    } else if(rule.playerHasLost(board)) {
+      Game.drawDefeat(context, drawEnd);
     } else {
       Game.drawVictory(context, drawEnd);
     }
@@ -137,7 +139,7 @@ public class Game {
       if (event != null) {
         Game.manageEventGame(event, board, rule, player);
       }
-    } while(rule.playerIsPresent(board) && !rule.playerIsWin(board));
+    } while(rule.playerIsPresent(board) && !rule.playerIsWin(board) && !rule.playerHasLost(board));
   }
 
   public static void playGame(ApplicationContext context, ImagesEndLoader imagesEndLoader, ImagesLoader imagesLoader, Rule rule, int width, int height) {
