@@ -35,7 +35,6 @@ public class Game {
   public static void drawDefeat(ApplicationContext context, DrawEnd drawEnd) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(drawEnd);
-    System.out.println("Defeat ! ");
     DrawEnd.draw(context, drawEnd, "DEFEAT");
     try {
       Thread.sleep(1000);
@@ -46,7 +45,6 @@ public class Game {
   public static void drawVictory(ApplicationContext context, DrawEnd drawEnd) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(drawEnd);
-    System.out.println("Victory !");
     DrawEnd.draw(context, drawEnd, "CONGRATULATIONS");
     try {
       Thread.sleep(1000);
@@ -89,7 +87,6 @@ public class Game {
 
     var drawGame = new DrawGame(0, 0, width, height, board, imagesLoader);
     DrawGame.draw(context, board, drawGame);
-    board.displayBoard();
   }
 
   public static void eventWithADirection(GameBoard board, Rule rule, List<Square> player, Direction direction) {

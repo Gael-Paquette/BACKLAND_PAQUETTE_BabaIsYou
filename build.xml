@@ -1,0 +1,67 @@
+<project name="BACKLAND_PAQUETTE_BabaIsYou" default="run" basedir=".">
+    <!-- Properties definition -->
+    <property name="jar-name" value="baba.jar"/>
+    <property name="src-dir" value="src"/>
+    <property name="build-dir" value="classes"/>
+    <property name="lib-dir" value="lib"/>
+    <property name="javadoc-dir" value="docs/doc"/>
+    <property name="resources-dir" value="resources"/>
+    <property name="root-package" value="fr.esiee.babaisyou"/>
+    <property name="main-class" value="${root-package}.controler.Main"/>
+    <property name="dependencies-jar-sealed-zen" value="${lib-dir}/zen-6.0.jar"/>
+    <fileset id="dependencies-jar-all" dir="${lib-dir}" includes="**/*.jar"/>
+    <manifestclasspath property="manifest-classpath" jarfile=".">
+        <classpath>
+            <fileset refid="dependencies-jar-all"/>
+        </classpath>
+    </manifestclasspath>
+
+    <!-- Compiling Project -->
+    <target name="compile">
+        <javac srcdir="${src-dir}"
+               destdir="${build-dir}"
+               verbose="true"
+               includeantruntime="false">
+            <classpath>
+                <fileset refid="dependencies-jar-all"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Copy resources -->
+    <target name="copy-resources" depends="compile">
+        <copy todir="${build-dir}">
+            <fileset dir="${resources-dir}" includes="**/*"/>
+        </copy>
+    </target>
+
+    <!-- Generate Jar -->
+    <target name="jar" depends="copy-resources">
+        <jar destfile="${jar-name}">
+            <fileset dir="${build-dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="Class-Path" value="lib/zen-6.0.jar"/>
+            </manifest>
+            <zipgroupfileset dir="${lib-dir}" includes="**/*.jar"/>
+        </jar>
+    </target>
+
+    <!-- Cleaning classes/, docs/doc directories -->
+    <target name="clean">
+        <delete includeemptydirs="true">
+            <fileset dir="${build-dir}" includes="**/*"/>
+        </delete>
+        <delete includeemptydirs="true">
+            <fileset dir="${javadoc-dir}" includes="**/*"/>
+        </delete>
+        <delete includeemptydirs="true">
+            <fileset dir="." includes="${jar-name}"/>
+        </delete>
+    </target>
+
+    <!-- Run the JAR -->
+    <target name="run" depends="jar">
+        <java jar="${jar-name}" fork="true"/>
+    </target>
+</project>
