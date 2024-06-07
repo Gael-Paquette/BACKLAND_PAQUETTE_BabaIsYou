@@ -99,7 +99,7 @@ public class Game {
 
     for (var square : player) {
       if (board.facingABlock(square, direction))
-        board.push(direction);
+        board.push(square, direction);
       board.movePlayer(square, direction);
     }
     if(rule.namesToTransform(board) != null)
@@ -150,7 +150,6 @@ public class Game {
     if (width < 0 || height < 0) {
       throw new IllegalArgumentException("width and height must be greater than 0");
     }
-
     var level = 0;
     do {
       try {

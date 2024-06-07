@@ -11,7 +11,7 @@ public class Rule {
     Objects.requireNonNull(operator);
     Objects.requireNonNull(propertyOrName);
 
-    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     var operators = List.of("IS", "ON", "HAS", "AND");
     var properties = List.of("YOU", "WIN", "STOP", "PUSH", "MELT", "HOT", "DEFEAT", "SINK");
 
@@ -70,13 +70,13 @@ public class Rule {
   public boolean isTraversable(GameBoard board, String name) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(name);
-    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
     return !isValidRule(board, name, "IS", "PUSH") && !isValidRule(board, name, "IS", "STOP");
   }
 
   public String[] namesToTransform(GameBoard board) {
-    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     String [] tab = new String[2];
     for(var name1 : names) {
       for(var name2 : names) {
@@ -92,40 +92,40 @@ public class Rule {
 
   public boolean isMelt(GameBoard board, String name) {
     Objects.requireNonNull(board);
-    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
     return isValidRule(board, name, "IS", "MELT");
   }
 
   public boolean isHot(GameBoard board, String name) {
     Objects.requireNonNull(board);
-    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
     return isValidRule(board, name, "IS", "HOT");
   }
 
   public boolean isSink(GameBoard board, String name) {
     Objects.requireNonNull(board);
-    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var names = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     if(!names.contains(name)) throw new IllegalArgumentException("Invalid name : " + name);
     return isValidRule(board, name, "IS", "SINK");
   }
 
   public String typeOfPlayerPresent(GameBoard board) {
     Objects.requireNonNull(board);
-    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     return players.stream().filter(p -> isValidRule(board, p, "IS", "YOU")).findFirst().orElse("");
   }
 
   public boolean playerIsPresent(GameBoard board) {
     Objects.requireNonNull(board);
-    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     return players.stream().anyMatch(p -> isValidRule(board, p, "IS", "YOU")) && !board.typeofSquare(typeOfPlayerPresent(board)).isEmpty();
   }
 
   public boolean playerHasLost(GameBoard board) {
     Objects.requireNonNull(board);
-    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     for(var name : players) {
       if((isValidRule(board, name, "IS", "DEFEAT") || (isValidRule(board, name, "IS", "SINK"))) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
         return true;
@@ -137,7 +137,7 @@ public class Rule {
 
   public boolean playerIsWin(GameBoard board) {
     Objects.requireNonNull(board);
-    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK");
+    var players = List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER");
     for(var name : players) {
       if((isValidRule(board, name, "IS", "WIN")) && board.typeofSquare(name).stream().anyMatch(board::isPlayerOn))
         return true;
