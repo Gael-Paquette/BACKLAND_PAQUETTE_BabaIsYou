@@ -61,6 +61,8 @@ public class Game {
       Game.drawDefeat(context, drawEnd);
     } else if (!rule.playerIsPresent(board)) {
       Game.drawDefeat(context, drawEnd);
+    } else if(rule.playerHasLost(board)) {
+      Game.drawDefeat(context, drawEnd);
     } else {
       Game.drawVictory(context, drawEnd);
     }
@@ -97,7 +99,7 @@ public class Game {
 
     for (var square : player) {
       if (board.facingABlock(square, direction))
-        board.push(direction);
+        board.push(square, direction);
       board.movePlayer(square, direction);
     }
     if(rule.namesToTransform(board) != null)
@@ -137,7 +139,7 @@ public class Game {
       if (event != null) {
         Game.manageEventGame(event, board, rule, player);
       }
-    } while(rule.playerIsPresent(board) && !rule.playerIsWin(board));
+    } while(rule.playerIsPresent(board) && !rule.playerIsWin(board) && !rule.playerHasLost(board));
   }
 
   public static void playGame(ApplicationContext context, ImagesEndLoader imagesEndLoader, ImagesLoader imagesLoader, Rule rule, int width, int height) {
@@ -148,7 +150,6 @@ public class Game {
     if (width < 0 || height < 0) {
       throw new IllegalArgumentException("width and height must be greater than 0");
     }
-
     var level = 0;
     do {
       try {
