@@ -13,11 +13,24 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The {@code Game} class contains the main logic for running the "Baba Is You" game.
+ */
 public class Game {
+  /**
+   * Creates a new {@code Rule} instance.
+   *
+   * @return a new {@code Rule} instance
+   */
   public static Rule newRule() {
     return new Rule();
   }
 
+  /**
+   * Creates a new {@code ImagesLoader} instance with predefined lists of images.
+   *
+   * @return a new {@code ImagesLoader} instance
+   */
   public static ImagesLoader newImagesLoader() {
     return new ImagesLoader(
             List.of("BABA", "FLAG", "WALL", "WATER", "SKULL", "LAVA", "ROCK", "FLOWER"),
@@ -26,12 +39,23 @@ public class Game {
     );
   }
 
+  /**
+   * Creates a new {@code ImagesEndLoader} instance with predefined lists of end images.
+   *
+   * @return a new {@code ImagesEndLoader} instance
+   */
   public static ImagesEndLoader newImagesEndLoader() {
     return new ImagesEndLoader(
             List.of("CONGRATULATIONS", "DEFEAT")
     );
   }
 
+  /**
+   * Draws the defeat screen and exits the game.
+   *
+   * @param context the application context
+   * @param drawEnd the draw end instance
+   */
   public static void drawDefeat(ApplicationContext context, DrawEnd drawEnd) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(drawEnd);
@@ -42,6 +66,12 @@ public class Game {
     System.exit(0);
   }
 
+  /**
+   * Draws the victory screen.
+   *
+   * @param context the application context
+   * @param drawEnd the draw end instance
+   */
   public static void drawVictory(ApplicationContext context, DrawEnd drawEnd) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(drawEnd);
@@ -51,6 +81,14 @@ public class Game {
     } catch (InterruptedException ignored) {}
   }
 
+  /**
+   * Draws the end screen based on the game state.
+   *
+   * @param context the application context
+   * @param board the game board
+   * @param rule the game rules
+   * @param drawEnd the draw end instance
+   */
   public static void drawEnd(ApplicationContext context, GameBoard board, Rule rule, DrawEnd drawEnd) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(board);
@@ -68,17 +106,40 @@ public class Game {
     }
   }
 
+  /**
+   * Clears the game window.
+   *
+   * @param context the application context
+   * @param width the width of the window
+   * @param height the height of the window
+   */
   public static void clearWindow(ApplicationContext context, int width, int height) {
     Objects.requireNonNull(context);
     var clearWidow = new ClearWindow(0, 0, width, height);
     ClearWindow.clearWindow(context, clearWidow);
   }
 
+  /**
+   * Retrieves the list of player squares from the game board.
+   *
+   * @param board the game board
+   * @return the list of player squares
+   */
   public static List<Square> getSquaresPlayer(GameBoard board) {
     Objects.requireNonNull(board);
     return board.getSquaresPlayer();
   }
 
+  /**
+   * Draws the current state of the game.
+   *
+   * @param context the application context
+   * @param board the game board
+   * @param imagesLoader the images loader
+   * @param width the width of the window
+   * @param height the height of the window
+   * @throws IllegalArgumentException if width or height is less than 0
+   */
   public static void drawGame(ApplicationContext context, GameBoard board, ImagesLoader imagesLoader, int width, int height) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(board);
@@ -91,6 +152,14 @@ public class Game {
     DrawGame.draw(context, board, drawGame);
   }
 
+  /**
+   * Handles player movement based on the direction.
+   *
+   * @param board the game board
+   * @param rule the game rules
+   * @param player the list of player squares
+   * @param direction the direction to move
+   */
   public static void eventWithADirection(GameBoard board, Rule rule, List<Square> player, Direction direction) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(rule);
@@ -106,6 +175,14 @@ public class Game {
       board.transformSquare(rule.namesToTransform(board)[0], rule.namesToTransform(board)[1]);
   }
 
+  /**
+   * Manages events in the game.
+   *
+   * @param event the event to manage
+   * @param board the game board
+   * @param rule the game rules
+   * @param player the list of player squares
+   */
   public static void manageEventGame(Event event, GameBoard board, Rule rule, List<Square> player) {
     Objects.requireNonNull(event);
     Objects.requireNonNull(board);
@@ -123,6 +200,18 @@ public class Game {
       case AVOID -> {}
     }
   }
+
+  /**
+   * Plays a single level of the game.
+   *
+   * @param context the application context
+   * @param board the game board
+   * @param rule the game rules
+   * @param imagesLoader the images loader
+   * @param width the width of the window
+   * @param height the height of the window
+   * @throws IllegalArgumentException if width or height is less than 0
+   */
   public static void playGameLevel(ApplicationContext context, GameBoard board, Rule rule, ImagesLoader imagesLoader, int width, int height) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(board);
@@ -142,6 +231,17 @@ public class Game {
     } while(rule.playerIsPresent(board) && !rule.playerIsWin(board) && !rule.playerHasLost(board));
   }
 
+  /**
+   * Plays the game through multiple levels.
+   *
+   * @param context the application context
+   * @param imagesEndLoader the images end loader
+   * @param imagesLoader the images loader
+   * @param rule the game rules
+   * @param width the width of the window
+   * @param height the height of the window
+   * @throws IllegalArgumentException if width or height is less than 0
+   */
   public static void playGame(ApplicationContext context, ImagesEndLoader imagesEndLoader, ImagesLoader imagesLoader, Rule rule, int width, int height) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(imagesEndLoader);
