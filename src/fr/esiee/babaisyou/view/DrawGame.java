@@ -8,6 +8,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
 
+/**
+ * The {@code DrawGame} class is responsible for drawing the game board and its elements.
+ */
 public class DrawGame {
   private final int xOrigin;
   private final int yOrigin;
@@ -17,6 +20,18 @@ public class DrawGame {
   private final GameBoard board;
   private final ImagesLoader imagesLoader;
 
+  /**
+   * Constructs a {@code DrawGame} instance with specified origin, dimensions, game board, and image loader.
+   *
+   * @param xOrigin the x-coordinate of the origin
+   * @param yOrigin the y-coordinate of the origin
+   * @param width the width of the drawing area
+   * @param height the height of the drawing area
+   * @param board the game board to be drawn
+   * @param imagesLoader the loader for game images
+   * @throws IllegalArgumentException if any of the origin coordinates or dimensions are negative
+   * @throws NullPointerException if {@code board} or {@code imagesLoader} is null
+   */
   public DrawGame(int xOrigin, int yOrigin, int width, int height, GameBoard board, ImagesLoader imagesLoader) {
     Objects.requireNonNull(board);
     Objects.requireNonNull(imagesLoader);
@@ -32,14 +47,37 @@ public class DrawGame {
     this.imagesLoader = imagesLoader;
   }
 
+  /**
+   * Calculates the x-coordinate for a given column index.
+   *
+   * @param j the column index
+   * @return the x-coordinate
+   */
   private float xFromJ(int j) {
     return xOrigin + (j * squareSize);
   }
 
+  /**
+   * Calculates the y-coordinate for a given row index.
+   *
+   * @param i the row index
+   * @return the y-coordinate
+   */
   private float yFromI(int i) {
     return yOrigin + (i * squareSize);
   }
 
+  /**
+   * Draws an image at the specified location with the specified dimensions.
+   *
+   * @param graphics the graphics context
+   * @param image the image to draw
+   * @param x the x-coordinate to draw the image
+   * @param y the y-coordinate to draw the image
+   * @param dimX the width of the area to draw the image
+   * @param dimY the height of the area to draw the image
+   * @throws NullPointerException if {@code graphics} or {@code image} is null
+   */
   public static void drawImage(Graphics2D graphics, Image image, float x, float y, float dimX, float dimY) {
     Objects.requireNonNull(graphics);
     Objects.requireNonNull(image);
@@ -52,6 +90,14 @@ public class DrawGame {
     graphics.drawImage(image, transform, null);
   }
 
+  /**
+   * Draws a square at the specified row and column indices.
+   *
+   * @param graphics the graphics context
+   * @param i the row index
+   * @param j the column index
+   * @throws NullPointerException if {@code graphics} is null
+   */
   private void drawSquare(Graphics2D graphics, int i, int j) {
     Objects.requireNonNull(graphics);
 
@@ -67,6 +113,13 @@ public class DrawGame {
     }
   }
 
+  /**
+   * Draws the game board.
+   *
+   * @param graphics the graphics context
+   * @param board the game board to be drawn
+   * @throws NullPointerException if {@code graphics} or {@code board} is null
+   */
   private void drawGameBoard(Graphics2D graphics, GameBoard board) {
     Objects.requireNonNull(graphics);
     Objects.requireNonNull(board);
@@ -81,6 +134,14 @@ public class DrawGame {
     }
   }
 
+  /**
+   * Draws the game board using the specified application context and {@code DrawGame} view.
+   *
+   * @param context the application context
+   * @param board the game board to be drawn
+   * @param view the {@code DrawGame} instance specifying the drawing parameters
+   * @throws NullPointerException if {@code context}, {@code board}, or {@code view} is null
+   */
   public static void draw(ApplicationContext context, GameBoard board, DrawGame view) {
     Objects.requireNonNull(context);
     Objects.requireNonNull(board);

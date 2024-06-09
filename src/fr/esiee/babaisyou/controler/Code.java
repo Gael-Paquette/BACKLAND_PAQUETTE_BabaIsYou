@@ -19,22 +19,27 @@ public enum Code {
    * Action to exit the game.
    */
   EXIT,
+
   /**
    * Action to move left.
    */
   LEFT,
+
   /**
    * Action to move right.
    */
   RIGHT,
+
   /**
    * Action to move up.
    */
   UP,
+
   /**
    * Action to move down.
    */
   DOWN,
+
   /**
    * Action to avoid an action or obstacle.
    */
