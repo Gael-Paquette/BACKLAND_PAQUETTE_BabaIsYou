@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"fr.esiee.babaisyou.controler"},{"l":"fr.esiee.babaisyou.model"},{"l":"fr.esiee.babaisyou.view"}];updateSearchResults();
