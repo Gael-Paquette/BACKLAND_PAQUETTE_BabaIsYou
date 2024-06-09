@@ -64,4 +64,15 @@
     <target name="run" depends="jar">
         <java jar="${jar-name}" fork="true"/>
     </target>
+
+    <!-- Generate Javadoc -->
+    <target name="javadoc">
+        <javadoc sourcepath="${src-dir}"
+                 destdir="${javadoc-dir}"
+                 failonerror="true">
+            <classpath>
+                <fileset refid="dependencies-jar-all" />
+            </classpath>
+        </javadoc>
+    </target>
 </project>

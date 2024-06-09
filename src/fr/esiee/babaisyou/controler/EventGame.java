@@ -3,7 +3,6 @@ package fr.esiee.babaisyou.controler;
 import com.github.forax.zen.Event;
 import com.github.forax.zen.KeyboardEvent;
 import com.github.forax.zen.PointerEvent;
-import fr.esiee.babaisyou.model.GameBoard;
 
 import java.util.Objects;
 
