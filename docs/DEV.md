@@ -45,6 +45,14 @@ Elle permet également surtout de vérifier que le joueur reste toujours en règ
 
 <h3 style="text-align:center;">FRONTEND DU PROJET</h3>
 
+Pour cette partie du projet, nous avons utilisé la librairie ```Zen6``` qui permet une gestion des events clavier et souris créer par l'utilisateur mais aussi tout l'affichage graphique du jeu.
+La plus grosse partie du travail reposait sur le chargement des images en mémoire pour ensuite les afficher à l'écran en fonction du niveau chargé. Pour cette partie du travail, nous sommes parties sur l'utilisation de ```.gif``` qui permettait de donnée vie 
+au élément du jeu pour respecter les demandes du client.  Ainsi, nous avons deux classes pour gérer le chargement de toutes les images du jeu que ce soit les blocs ou les images de fin de partie (celle-ci sont fixes, nous utilisons donc des ```.png``` pour celles-ci).
+Les deux classes de chargement des images ```ImagesLoader``` et ```ImagesEndLoader``` sont similaires et reposent sur la même technique de chargement des images. C'est-à-dire, la lecteur du chemin d'accès à l'image, la lecture et le chargement de l'image. Puis l'insertion de l'image dans une Map
+pour retouver facilement celle-ci à partir de son nom. Dans la classe ```ImagesLoader``` nous utilisons deux Map pour les objects et les mots, et dans la classe ```ImagesEndLoard``` nous utilisons une seule map pour charger les images de fin de niveaux.
+Ensuite, nous utilisons une classe pour afficher le plateau de jeu sur l'ecran. Cette classe prend donc en paramètre la classe ```GameBoard``` pour afficher le jeu.
+Pour finir, le frontEnd du projet s'étend aussi dans le package ```fr.esiee.babaisyou``` avec la classe ```EventGame``` qui s'occupe de toute la gestion des events clavier créer par l'utilisateur.
+
 <h3 style="text-align:center;">AMELIORATION ET CORRECTIONS APPORTEES DEPUIS LA SOUTENANCE BETA</h3>
 
 Lors de la soutenance bêta, nous étions arrivés à la moitié de la réalisation de notre projet, nous avons montré à l'enseignant l'ensemble des classes qui composent le package ```fr.esiee.babaisyou.model```.
