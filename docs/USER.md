@@ -1,6 +1,6 @@
 ### Auteurs : Raphaël BACKLAND & Gaël PAQUETTE
 ### Date de Création : 21/04/2024
-### Dernière Modification : 08/05/2024
+### Dernière Modification : 10/06/2024
 
 
 <h1 align="center">Manuel Utilisateur</h1>
