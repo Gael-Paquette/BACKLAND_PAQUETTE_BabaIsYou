@@ -1,18 +1,31 @@
-### Authors : Raphaël BACKLAND & Gaël PAQUETTE
-### Creation Date : 21/04/2024
-### Last Modification : 08/05/2024
+### Auteurs : Raphaël BACKLAND & Gaël PAQUETTE
+### Date de Création : 21/04/2024
+### Dernière Modification : 10/06/2024
 
 
-<h1 align="center">Development Report</h1>
+<h1 style="text-align:center;">Rapport de Développement</h1>
 
 
-This page explains the ```BACKLAND_PAQUETTE_BabaIsYou``` project architecture with a section dedicated to improvements and corrections made since the beta defense.
+Cette page est dédié à l'explique de l'architecture du projet ```BACKLAND_PAQUETTE_BabaIsYou``` et aux améliorations, corrections apportées deplus la soutenance beta.
 
-To compile the project with the ```build.xml``` file, you must use the ```ant``` command.
-Then, you need to user the following commands to compile, clean and build :
 
-- ```ant compile``` to compile the project
-- ```ant copy-resources``` to compile the images project
-- ```ant jar``` to create the file ```baba.jar```
-- ```ant run``` to run the project
-- ```ant clean``` to clean the build file project
+<h2 style="text-align:center;">SOMMAIRE</h2>
+### - INTRODUCTION
+### - ARCHITECTURE DU PROJET
+### - BACKEND DU PROJET
+### - FRONTEND DU PROJET 
+### - AMELIORATION ET CORRECTIONS APPORTEES DEPUIS LA SOUTENANCE BETA
+### - CONCLUSION
+
+
+<h3 style="text-align:center;">INTRODUCTION</h3>
+
+<h3 style="text-align:center;">ARCHITECTURE DU PROJET</h3> 
+
+<h3 style="text-align:center;">BACKEND DU PROJET</h3>
+
+<h3 style="text-align:center;">FRONTEND DU PROJET</h3>
+
+<h3 style="text-align:center;">AMELIORATION ET CORRECTIONS APPORTEES DEPUIS LA SOUTENANCE BETA</h3>
+
+<h3 style="text-align:center;">CONCLUSION</h3>
