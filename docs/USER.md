@@ -3,20 +3,20 @@
 ### Dernière Modification : 10/06/2024
 
 
-<h1 align="center">Manuel Utilisateur</h1>
+<h1 style="text-align:center;">Manuel Utilisateur</h1>
 
 
 Cette page est dédiée au manuel utilisateur du projet ```BACKLAND_PAQUETTE_BabaIsYou```.
 Dans cette page, vous trouverez la documentation pour compiler et utiliser le projet.
 
 
-## Sommaire :
+<h2 style="text-align:center">Sommaire</h2> 
 ### - Compilation du projet
 ### - Utilisation du jeu
 ### - Règles du jeu de Baba Is You
 
 
-### Compilation du projet
+<h3 style="text-align:center">Compilation du projet</h3>
 
 Pour compiler le projet, vous aviez à votre disposition le fichier ```build.xml```. 
 Le fichier permet de nettoyer la ```classes``` qui contient les sources du project compiler, de nettoyer le fichier 
@@ -32,7 +32,7 @@ Ensuite, vous devez utiliser les commandes suivantes pour compiler, nettoyer et 
 - ```ant clean``` pour clean le build du projet
 
 
-### Utilisation du projet
+<h3 style="text-align:center">Utilisation du projet</h3>
 
 Le projet utilise une interface graphique pour interagir avec l'utilisateur.
 Le projet utilise la librairie Zen6 pour gérer l'affichage graphique et pour gérer les events clavier, souris de l'utilisateur.
@@ -47,7 +47,7 @@ Pour deplacer le joueur sur la carte du jeu. Vous utiliserez les touches directi
 Pour arrêter le jeu en cours, vous utiliserez la touche ```Q``` du clavier.
 
 
-### Règles du jeu de Baba Is You
+<h3 style="text-align:center">Règles du jeu de Baba Is You</h3>
 
 Pour chaque niveau, il existe des règles immuables
 - ```YOU``` représentant le joueur, si aucun nom n'est associé à ```YOU```, ou qu'il n'y a plus d'élément en jeu représentant ce nom, alors la partie est perdue (si ```Rock Is You``` mais qu'il n'y a plus de rocher en jeu... c'est fini!)
