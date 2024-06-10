@@ -20,6 +20,11 @@ Cette page est dédié à l'explique de l'architecture du projet ```BACKLAND_PAQ
 
 <h3 style="text-align:center;">INTRODUCTION</h3>
 
+L'objectif de ce projet consistait à développer le jeu *Baba Is You* en utilisant la programmation orienté objet pour le cours de *Programmation Orienté Object*.
+Pour répondre au besoin, nous avons utilisé le language JAVA avec ```jdk-21``` ainsi que les bonnes utilisons de la programmation orientée objet.
+Ce projet nous a permit de monter en compétences sur la programmation orienté objet mais aussi l'utilisation d'un backend, d'un frontend et des méthodes simples devOps en JAVA.
+Au cours de ce rapport, nous verrons l'architecture de notre projet, le backend du projet, le frontend du projet ainsi ques les améliorations et corrections apportées depuis la soutenance beta.
+
 <h3 style="text-align:center;">ARCHITECTURE DU PROJET</h3> 
 
 <h3 style="text-align:center;">BACKEND DU PROJET</h3>
