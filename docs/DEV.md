@@ -27,6 +27,11 @@ Au cours de ce rapport, nous verrons l'architecture de notre projet, le backend 
 
 <h3 style="text-align:center;">ARCHITECTURE DU PROJET</h3> 
 
+Pour ce projet nous avons décidé d'utiliser une architecture MVC (Model - View - Controler) pour simplifier la lecture du code mais aussi bien différencier le backend du projet avec l'interaction utilisateur (Controler) et l'affichage du projet (View).
+Ainsi, le code du projet se répartie sous 3 package différents. Le premier ```fr.esiee.babaisyou.controler``` comporte les classes dédié à l'interaction avec l'utilisateur avec notamment la classe ```Main.java```.
+Le deuxième package ```fr.esiee.babaisyou.model``` contient le backend du projet avec toutes les classes dédié aux règles du jeu, la gestion de l'aire de jeu, la gestion des objects est des mots.
+Le troisième package ```fr.esiee.babaisyou.view``` comporte le frontend du projet avec l'utilisation de librairie ```Zen6``` qui permet de gerer l'affichage graphique du jeu à l'écran.
+
 <h3 style="text-align:center;">BACKEND DU PROJET</h3>
 
 <h3 style="text-align:center;">FRONTEND DU PROJET</h3>
@@ -34,3 +39,8 @@ Au cours de ce rapport, nous verrons l'architecture de notre projet, le backend 
 <h3 style="text-align:center;">AMELIORATION ET CORRECTIONS APPORTEES DEPUIS LA SOUTENANCE BETA</h3>
 
 <h3 style="text-align:center;">CONCLUSION</h3>
+
+Ce projet nous à permit de monter en compétence sur la programmation orienté objet avec JAVA ainsi qu'une montée en compétence sur GitHub.
+en effet, pour ce projet nous avons utilisé un repository GitHub qui se trouve la l'adresse suivante ```https://github.com/Gael-Paquette/BACKLAND_PAQUETTE_BabaIsYou```.
+En utilisant un gestionnaire de code comme GitHub, cela nous a permit de bien nous répartir le travail mais aussi de garder un code tout le temps à jour avec l'utilisation du principe de ```branch``` et de ```merge```.
+
