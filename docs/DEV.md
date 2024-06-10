@@ -3,10 +3,10 @@
 ### Dernière Modification : 10/06/2024
 
 
-<h1 style="text-align:center;">Rapport de Développement</h1>
+<h1 style="text-align:center;">Rapport de développement</h1>
 
 
-Cette page est dédié à l'explique de l'architecture du projet ```BACKLAND_PAQUETTE_BabaIsYou``` et aux améliorations, corrections apportées deplus la soutenance beta.
+Cette page est dédié à l'explication de l'architecture du projet ```BACKLAND_PAQUETTE_BabaIsYou``` et aux améliorations, corrections apportées depuis la soutenance bêta.
 
 
 <h2 style="text-align:center;">SOMMAIRE</h2>
@@ -34,13 +34,27 @@ Le troisième package ```fr.esiee.babaisyou.view``` comporte le frontend du proj
 
 <h3 style="text-align:center;">BACKEND DU PROJET</h3>
 
+Plusieurs classes composent le package ```fr.esiee.babaisyou.model``` pour le back-end du jeu.
+Dans un premier temps, nous avons la classe centrale du jeu ```Gameboard``` permettant l'initialisation de la grille de jeu et gérant les différents déplacements du joueur et le poussage des blocs.
+Pour gérer les déplacements, on utilise une énumération ```Direction``` pour éviter de les réécrire sous forme de chaîne de caractères.
+Dans un second temps, nous avons une interface ```Square``` représentant l'élement du jeu, on peut contrôler ses coordonnées, connaître son statut (de quel type est-il ?).
+Nous avons ainsi, les classes ```Name```, ```Object```, ```Operator``` et ```Property``` qui sont implémentées par cette interface.
+Enfin, il y a également la classe ```Rule``` permettant le contrôle des règles du jeu, c'est avec cette classe que la méthode détecte sur le plateau si un ensemble Nom-Opérateur-Nom ou Nom-Opérateur-Propriété existe.
+Elle permet également surtout de vérifier que le joueur reste toujours en règle par rapport aux ensembles formés, s'il existe toujours, s'il a gagné ou s'il a perdu.
+
+
 <h3 style="text-align:center;">FRONTEND DU PROJET</h3>
 
 <h3 style="text-align:center;">AMELIORATION ET CORRECTIONS APPORTEES DEPUIS LA SOUTENANCE BETA</h3>
 
+Lors de la soutenance bêta, nous étions arrivés à la moitié de la réalisation de notre projet, nous avons montré à l'enseignant l'ensemble des classes qui composent le package ```fr.esiee.babaisyou.model```.
+L'ensemble des classes étaient pour la plupart correctes. Cependant, après discussion avec l'enseignant, nous avons remarqué que la classe ```GameBoard``` de ce package, classe la plus importante du jeu, ne serait pas compatible avec la suite du projet,
+en effet, cette classe reposait sur un tableau qui permettait d'associer un élement à chaque coordonnées. Au début du projet, nous avons choisi cette structure pour démarrer le jeu sans y avoir fait assez de réflexion,
+c'est par la suite que nous avons su que chaque indice du tableau du jeu pouvait contenir plusieurs blocs. Ainsi, nous avons dû restructurer l'ensemble de cette classe pour l'adapter à la nouvelle structure qui répondra cette fois-ci à nos attentes : une map.
+
 <h3 style="text-align:center;">CONCLUSION</h3>
 
-Ce projet nous à permit de monter en compétence sur la programmation orienté objet avec JAVA ainsi qu'une montée en compétence sur GitHub.
+Ce projet nous à permit de monter en compétences sur la programmation orienté objet avec JAVA ainsi qu'une montée en compétence sur GitHub.
 en effet, pour ce projet nous avons utilisé un repository GitHub qui se trouve la l'adresse suivante ```https://github.com/Gael-Paquette/BACKLAND_PAQUETTE_BabaIsYou```.
 En utilisant un gestionnaire de code comme GitHub, cela nous a permit de bien nous répartir le travail mais aussi de garder un code tout le temps à jour avec l'utilisation du principe de ```branch``` et de ```merge```.
 
